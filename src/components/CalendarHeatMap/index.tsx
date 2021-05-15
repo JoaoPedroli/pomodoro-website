@@ -26,7 +26,7 @@ export const CalendarHeatMap = ({ pomodoroDays }) => {
         startDate={new Date("2020-12-31")}
         endDate={new Date("2021-12-31")}
         titleForValue={(value) =>
-          `${value?.countInMinutes ?? 0} minuto(s) de estudo`}
+          value?.countInMinutes && `${value.countInMinutes} minuto(s) de estudo`}
         classForValue={(value) =>
           value
             ? `color-scale-${findValueCountRange(value.countInMinutes)}`
