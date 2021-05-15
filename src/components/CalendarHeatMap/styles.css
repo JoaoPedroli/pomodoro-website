@@ -1,0 +1,8 @@
+.react-calendar-heatmap { width: 1000px; }
+
+.react-calendar-heatmap .color-empty { fill: var(--white3); }
+
+.react-calendar-heatmap .color-scale-25 { fill: var(--calendar-color-25); }
+.react-calendar-heatmap .color-scale-50 { fill: var(--calendar-color-50); }
+.react-calendar-heatmap .color-scale-100 { fill: var(--calendar-color-100); }
+.react-calendar-heatmap .color-scale-200 { fill: var(--calendar-color-200); }

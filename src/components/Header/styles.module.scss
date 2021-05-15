@@ -1,0 +1,40 @@
+.container {
+  width: 100%;
+  color: var(--white);
+  padding: 20px 0;
+  transition: all 1s;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.auth {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  button {
+    margin: 0 3px;
+  }
+}
+
+#login, #signup {
+  padding: 5px;
+  border-radius: var(--border-radius);
+  font-size: 25px;
+}
+
+#login{
+  background: none;
+  border: 0.5px solid var(--white);
+
+  &:hover {
+    background: var(--white);
+  }
+}
+
+#signup {
+  background: var(--white);
+  margin-left: 15px;
+}

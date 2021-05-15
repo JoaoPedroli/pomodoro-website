@@ -1,0 +1,55 @@
+.container {
+  height: 89%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.subcontainer {
+  background: var(--white);
+  padding: 38px;
+  border-radius: var(--border-radius);
+  min-width: 434px;
+  max-height: 450px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  h2 {
+    font-weight: normal;
+  }
+
+  #progressTimer {
+    width: 434px;
+    border-radius: 10px 10px 0 0;
+    background: var(--white1);
+    height: 10px;
+    margin: -38px -38px 38px -38px;
+  }
+
+  #title {
+    font-size: 36px;
+  }
+
+  #time {
+    font-size: 55px;
+    margin: 38px 0;
+  }
+
+  #closebutton {
+    background: var(--red);
+    transition: all 1s;
+    font-size: 20px;
+    padding: 4px 10px !important;
+  }
+}
+
+.divbuttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

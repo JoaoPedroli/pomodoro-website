@@ -1,0 +1,72 @@
+:root {
+  --background: #eaeaea;
+  --color: #303030;
+
+  --primary: #4cd137;
+  --primary-shadow: #44bd32;
+  --study: #fbc531;
+  --study-shadow: #e1b12c;
+  --short-break: #00a8ff;
+  --short-break-shadow: #0097e6;
+  --long-break: #0097e6;
+  --long-break-shadow: #037ec1;
+
+  --calendar-color-25: #39d353;
+  --calendar-color-50: #26a641;
+  --calendar-color-100: #006d32;
+  --calendar-color-200: #0e4429;
+
+  --white: #fff;
+  --white1: #f3f3f3;
+  --white2: #eee;
+  --white3: #ddd;
+  --white4: #ccc;
+  --white5: #bbb;
+  --white6: #aaa;
+  --black: #000;
+  --red: #e84118;
+
+  --border-radius: 10px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background: var(--background);
+  color: var(--color);
+  transition: all 0.3s;
+}
+
+input {
+  height: 50px;
+  border: 0.5px #ddd solid;
+  border-radius: var(--border-radius);
+  padding: 0 5px;
+  font-size: 20px;
+  transition: all 0.3s;
+
+  &:hover {
+    box-shadow: 1px 1px 5px #bbb;
+  }
+}
+
+button, select, a { cursor: pointer }
+button {
+  transition: all 0.3s;
+  padding: 10px;
+  border: none;
+  color: var(--white);
+  border-radius: var(--border-radius);
+  font-size: 31px;
+
+  &:hover { opacity: .9 }
+}
+
+#pointer {
+  cursor: pointer;
+}
