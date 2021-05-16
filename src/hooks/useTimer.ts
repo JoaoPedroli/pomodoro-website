@@ -16,7 +16,6 @@ export const useTimer = (initialState: number): UseTimerData => {
   const {
     isStudy, totalPomodorosCompleted,
     handleChangeStatus,
-    handleMinutesToSeconds,
   } = usePomodoro();
 
   const [ timeInSeconds, setTimeInSeconds ] = useState(initialState);
@@ -25,30 +24,30 @@ export const useTimer = (initialState: number): UseTimerData => {
 
   const countRef = useRef(null);
 
-  const NUM_NEEDED_FOR_LONG_BREAK = 3;
+  const NUM_NEEDED_FOR_LONG_BREAK = 4;
 
   const toggleStart = () => {
     handleChangeStatus('start');
-    setTimeInSeconds(handleMinutesToSeconds(25));
-    // setTimeInSeconds(1);
+    // setTimeInSeconds(handleMinutesToSeconds(25));
+    setTimeInSeconds(1);
   };
 
   const toggleStudy = () => {
     handleChangeStatus('study');
-    setTimeInSeconds(handleMinutesToSeconds(25));
-    // setTimeInSeconds(1);
+    // setTimeInSeconds(handleMinutesToSeconds(25));
+    setTimeInSeconds(1);
   };
 
   const toggleShortBreak = () => {
     handleChangeStatus('short break');
-    setTimeInSeconds(handleMinutesToSeconds(5));
-    // setTimeInSeconds(1);
+    // setTimeInSeconds(handleMinutesToSeconds(5));
+    setTimeInSeconds(1);
   };
 
   const toggleLongBreak = () => {
     handleChangeStatus('long break');
-    setTimeInSeconds(handleMinutesToSeconds(15));
-    // setTimeInSeconds(1);
+    // setTimeInSeconds(handleMinutesToSeconds(15));
+    setTimeInSeconds(1);
   };
 
   const handleStart = () => {

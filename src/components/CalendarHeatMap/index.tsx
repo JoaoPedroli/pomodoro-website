@@ -1,10 +1,20 @@
+import { format } from "date-fns";
 import { useState } from "react";
 import CalendarHeatmap from "react-calendar-heatmap";
 import "react-calendar-heatmap/dist/styles.css";
 
 import "./styles.css";
 
-export const CalendarHeatMap = ({ pomodoroDays }) => {
+type PomodoroDayTypes = {
+  date: string;
+  countInMinutes: number;
+};
+
+type PomodoroDaysTypes = {
+  pomodoroDays: Array<PomodoroDayTypes>;
+};
+
+export const CalendarHeatMap = ({ pomodoroDays }: PomodoroDaysTypes) => {
   const findValueCountRange = (countInMinutes: number) => {
     if (countInMinutes <= 25) {
       return 25;
@@ -26,7 +36,13 @@ export const CalendarHeatMap = ({ pomodoroDays }) => {
         startDate={new Date("2020-12-31")}
         endDate={new Date("2021-12-31")}
         titleForValue={(value) =>
-          value?.countInMinutes && `${value.countInMinutes} minuto(s) de estudo`}
+          value?.countInMinutes &&
+          `${
+            format(new Date(value.date), "MMM dd, yyyy")
+          } - ${value.countInMinutes} minute${
+            value.countInMinutes > 1 && "s"
+          } of study`
+        }
         classForValue={(value) =>
           value
             ? `color-scale-${findValueCountRange(value.countInMinutes)}`

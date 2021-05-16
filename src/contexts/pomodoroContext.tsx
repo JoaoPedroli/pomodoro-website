@@ -1,10 +1,10 @@
 import { createContext, ReactNode, useContext, useState } from "react";
-import { toast } from "react-toastify";
 import { format } from "date-fns";
 
 import firebase from "../database/firebaseConnection";
 
 import { useAuth } from "./authContext";
+import Toast from "../components/Toast";
 
 type PomodoroContextData = {
   isStart: boolean;
@@ -28,7 +28,7 @@ export const PomodoroContext = createContext({} as PomodoroContextData);
 export const PomodoroContextProvider = (
   { children }: PomodoroContextProviderProps,
 ) => {
-  const { userData } = useAuth();
+  const { isSigned, userData } = useAuth();
   const uid = userData?.uid;
 
   const [isStart, setIsStart] = useState(true);
@@ -37,7 +37,7 @@ export const PomodoroContextProvider = (
   const [isLongBreak, setIsLongBreak] = useState(false);
   const [theme, setTheme] = useState("var(--primary)");
   const [themeShadow, setThemeShadow] = useState("var(--primary-shadow)");
-  const [totalPomodorosCompleted, setTotalPomodorosCompleted] = useState(-1);
+  const [totalPomodorosCompleted, setTotalPomodorosCompleted] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleMinutesToSeconds = (minutes: number): number => minutes * 60;
@@ -125,28 +125,33 @@ export const PomodoroContextProvider = (
   const handleChangeStatus = async (status: string) => {
     setIsLoading(true);
 
-    const handleChangeIsStart = (paramIsStart: boolean) => {
-      const toggleThemeStart = () => {
-        setTheme("var(--primary)");
-        setThemeShadow("var(--primary-shadow)");
-      };
-
-      if(paramIsStart) {
-        setTotalPomodorosCompleted(-1);
+    const handleChangeIsStart = (p_IsStart: boolean) => {
+      if(p_IsStart) {
+        setTotalPomodorosCompleted(0);
         toggleThemeStart();
       }
+      setIsStart(p_IsStart);
 
-      setIsStart(paramIsStart);
+      function toggleThemeStart() {
+        setTheme("var(--primary)");
+        setThemeShadow("var(--primary-shadow)");
+      }
     };
 
-    const handleChangeIsStudy = async (paramIsStudy: boolean) => {
-      const toggleThemeStudy = () => {
+    const handleChangeIsStudy = async (p_IsStudy: boolean) => {
+      const wasStart = Boolean(totalPomodorosCompleted === 0)
+      if (p_IsStudy && isSigned && !wasStart) {
+        saveProgressInFirebase();
+      }
+      p_IsStudy && toggleThemeStudy();
+      setIsStudy(p_IsStudy);
+
+      function toggleThemeStudy() {
         setTheme("var(--study)");
         setThemeShadow("var(--study-shadow)");
-      };
+      }
 
-      const wasStart = Boolean(totalPomodorosCompleted === -1)
-      if (paramIsStudy && !wasStart) {
+      async function saveProgressInFirebase() {
         const wasShortBreak = Boolean(totalPomodorosCompleted > 0);
         let error = {};
         if (wasShortBreak) {
@@ -156,82 +161,82 @@ export const PomodoroContextProvider = (
         }
 
         if (error) {
-          toast.error(
-            "Oops! An error occurred while saving your progress, please contact support.",
-          );
-
+          Toast.error();
           console.log(error);
         }
       }
-
-      paramIsStudy && toggleThemeStudy();
-      setIsStudy(paramIsStudy);
     };
 
-    const handleChangeIsShortBreak = async (paramIsShortBreak: boolean) => {
-      const toggleThemeShortBreak = () => {
-        setTheme("var(--short-break)");
-        setThemeShadow("var(--short-break-shadow)");
-      };
-
-      const handleAddOnePomodoro = () => {
-        const isStartValue = Boolean(totalPomodorosCompleted === -1);
-        const increment = isStartValue ? 2 : 1;
-        setTotalPomodorosCompleted(totalPomodorosCompleted + increment);
-      };
-
-      if (paramIsShortBreak) {
+    const handleChangeIsShortBreak = async (p_IsShortBreak: boolean) => {
+      if (p_IsShortBreak) {
         handleAddOnePomodoro();
 
-        const { error } = await handleAddPomodoroDayMinutes();
-        const { error: error2 } = await handleAddStudyTimeAll();
-        if (error || error2) {
-          toast.error(
-            "Oops! An error occurred while saving your progress, please contact support.",
-          );
-          console.log(error ?? "");
-          console.log(error2 ?? "");
-        } else {
-          toast.success(
-            "Congratulations you finished 25 minutes of study, they were added to your history today, check the dashboard later. Time to relax ^^",
-          );
-        }
+        if(isSigned) await saveProgressInFirebase();
 
         toggleThemeShortBreak();
       }
+      setIsShortBreak(p_IsShortBreak);
 
-      setIsShortBreak(paramIsShortBreak);
-    };
 
-    const handleChangeIsLongBreak = async (paramIsLongBreak: boolean) => {
-      const toggleThemeLongBreak = () => {
-        setTheme("var(--long-break)");
-        setThemeShadow("var(--long-break-shadow)");
-      };
+      function handleAddOnePomodoro() {
+        const isStartValue = Boolean(totalPomodorosCompleted === 0);
+        const increment = isStartValue ? 2 : 1;
+        setTotalPomodorosCompleted(totalPomodorosCompleted + increment);
+      }
 
-      const handleRestartTotalPomodoro = () => setTotalPomodorosCompleted(0);
-
-      if (paramIsLongBreak) {
-        handleRestartTotalPomodoro();
-
+      async function saveProgressInFirebase() {
         const { error } = await handleAddPomodoroDayMinutes();
         const { error: error2 } = await handleAddStudyTimeAll();
-        if (error) {
-          toast.error(
-            "Oops! An error occurred while saving your progress, please contact support.",
-          );
+        if (error || error2) {
+          Toast.error();
           console.log(error ?? "");
           console.log(error2 ?? "");
         } else {
-          toast.success(
+          Toast.success(
             "Congratulations you finished 25 minutes of study, they were added to your history today, check the dashboard later. Time to relax ^^",
           );
         }
+      }
+
+      function toggleThemeShortBreak() {
+        setTheme("var(--short-break)");
+        setThemeShadow("var(--short-break-shadow)");
+      }
+    };
+
+    const handleChangeIsLongBreak = async (p_IsLongBreak: boolean) => {
+      if (p_IsLongBreak) {
+        handleRestartTotalPomodoro();
+
+        if(isSigned) await saveProgessinFirebase();
 
         toggleThemeLongBreak();
       }
+      setIsLongBreak(p_IsLongBreak);
 
-      setIsLongBreak(paramIsLongBreak);
+
+      function handleRestartTotalPomodoro() {
+        setTotalPomodorosCompleted(0);
+      }
+
+      async function saveProgessinFirebase() {
+        const { error } = await handleAddPomodoroDayMinutes();
+        const { error: error2 } = await handleAddStudyTimeAll();
+        if (error) {
+          Toast.error();
+          console.log(error ?? "");
+          console.log(error2 ?? "");
+        } else {
+          Toast.success(
+            "Congratulations you finished 25 minutes of study, they were added to your history today, check the dashboard later. Time to relax ^^",
+          );
+        }
+      }
+
+      function toggleThemeLongBreak() {
+        setTheme("var(--long-break)");
+        setThemeShadow("var(--long-break-shadow)");
+      }
     };
 
     handleChangeIsStart(Boolean(status === "start"));

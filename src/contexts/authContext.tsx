@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { getAuthErrorMessage } from '../database/authErrorMessages';
@@ -20,6 +20,8 @@ type UserDataProps = {
 type AuthContextData = {
   isSigned: boolean,
   userData: UserSignedDataProps,
+  username: string,
+  email: string,
   isLoading: boolean,
   isLoadingAuth: boolean,
   createUserWithEmailAndPassword: ({}: UserDataProps) => any,
@@ -38,6 +40,9 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
   const history = useHistory();
 
   const [ userData, setUserData ] = useState(null);
+  const username = userData?.username;
+  const email = userData?.email;
+
   const [ isLoadingAuth, setIsLoadingAuth ] = useState(false);
   const [ isLoading, setIsLoading] = useState(true);
 
@@ -66,7 +71,6 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
   };
 
   const saveUserDataInLocalStorage = (userData: UserSignedDataProps) => {
-    console.log(userData);
     localStorage.setItem('UserData', JSON.stringify(userData));
   };
 
@@ -172,6 +176,8 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     <AuthContext.Provider value={{
       isSigned: Boolean(userData),
       userData,
+      username,
+      email,
       isLoading,
       isLoadingAuth,
       createUserWithEmailAndPassword,

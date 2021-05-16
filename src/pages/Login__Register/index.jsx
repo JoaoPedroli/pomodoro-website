@@ -24,19 +24,21 @@ export const Login__Register = (props) => {
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-    const resetThemeAndProcess = () => handleChangeStatus("start");
+    const resetStatus = () => handleChangeStatus("start");
 
-    resetThemeAndProcess();
+    resetStatus();
   }, []);
 
   useEffect(() => {
-    setOptionAuth(props.location.search.slice(1, 7));
+    setOptionAuth(props.location.search);
   }, [props.location.search]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (optionAuth === "signin") {
+    console.log(optionAuth);
+
+    if (optionAuth === "?signin") {
       await signIn(email, password);
     } else {
       await createUserWithEmailAndPassword({
@@ -50,12 +52,11 @@ export const Login__Register = (props) => {
   return (
     <div className={styles.container}>
       <Form onSubmit={handleSubmit} className={styles.form}>
-        {optionAuth === "signup" && (
+        {optionAuth === "?signup" && (
           <FormGroup as={Col} className={styles.divGroup}>
             <FormLabel>Username</FormLabel>
             <FormControl
               required
-              id={styles.input}
               type="text"
               placeholder="Enter your username"
               value={username}
@@ -63,30 +64,31 @@ export const Login__Register = (props) => {
             />
           </FormGroup>
         )}
+
         <FormGroup as={Col} className={styles.divGroup}>
           <FormLabel>Email</FormLabel>
           <FormControl
             required
-            id={styles.input}
             type="email"
             placeholder="Enter your email"
             value={email}
             onChange={(ev) => setEmail(ev.target.value)}
           />
         </FormGroup>
+
         <FormGroup as={Col} className={styles.divGroup}>
           <FormLabel>Password</FormLabel>
           <FormControl
             required
-            id={styles.input}
             type="password"
             placeholder="Enter your password"
             value={password}
             onChange={(ev) => setPassword(ev.target.value)}
           />
         </FormGroup>
-        <Button id={styles.button} type="submit">
-          {optionAuth === "signin" ? "Login" : "Register"}
+
+        <Button type="submit">
+          {optionAuth === "?signin" ? "Login" : "Register"}
         </Button>
       </Form>
     </div>
