@@ -8,7 +8,7 @@
 
 .form {
   background: var(--white);
-  border-radius: var(--border-radius);
+  border-radius: var(--default-border-radius);
   padding: 30px;
 
   display: flex;
@@ -18,7 +18,7 @@
 
   input, button {
     font-size: 23px;
-    border-radius: var(--border-radius);
+    border-radius: var(--default-border-radius);
   }
   button {
     margin-top: 10px;

@@ -36,7 +36,7 @@ export const PomodoroContextProvider = (
   const [isShortBreak, setIsShortBreak] = useState(false);
   const [isLongBreak, setIsLongBreak] = useState(false);
   const [theme, setTheme] = useState("var(--primary)");
-  const [themeShadow, setThemeShadow] = useState("var(--primary-shadow)");
+  const [themeShadow, setThemeShadow] = useState("var(--dark-primary)");
   const [totalPomodorosCompleted, setTotalPomodorosCompleted] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -134,7 +134,7 @@ export const PomodoroContextProvider = (
 
       function toggleThemeStart() {
         setTheme("var(--primary)");
-        setThemeShadow("var(--primary-shadow)");
+        setThemeShadow("var(--dark-primary)");
       }
     };
 
@@ -147,8 +147,8 @@ export const PomodoroContextProvider = (
       setIsStudy(p_IsStudy);
 
       function toggleThemeStudy() {
-        setTheme("var(--study)");
-        setThemeShadow("var(--study-shadow)");
+        setTheme("var(--yellow)");
+        setThemeShadow("var(--dark-yellow)");
       }
 
       async function saveProgressInFirebase() {
@@ -199,8 +199,8 @@ export const PomodoroContextProvider = (
       }
 
       function toggleThemeShortBreak() {
-        setTheme("var(--short-break)");
-        setThemeShadow("var(--short-break-shadow)");
+        setTheme("var(--blue)");
+        setThemeShadow("var(--dark-blue)");
       }
     };
 
@@ -234,8 +234,8 @@ export const PomodoroContextProvider = (
       }
 
       function toggleThemeLongBreak() {
-        setTheme("var(--long-break)");
-        setThemeShadow("var(--long-break-shadow)");
+        setTheme("var(--light-blue)");
+        setThemeShadow("var(--dark-light-blue)");
       }
     };
 

@@ -3,13 +3,13 @@
   --color: #303030;
 
   --primary: #6ab04c;
-  --primary-shadow: #5e9d43;
-  --study: #f9ca24;
-  --study-shadow: #e1b12c;
-  --short-break: #00a8ff;
-  --short-break-shadow: #0097e6;
-  --long-break: #22a6b3;
-  --long-break-shadow: #20919b;
+  --dark-primary: #5e9d43;
+  --yellow: #f9ca24;
+  --dark-yellow: #e1b12c;
+  --blue: #00a8ff;
+  --dark-blue: #0097e6;
+  --light-blue: #22a6b3;
+  --dark-light-blue: #20919b;
 
   --calendar-color-25: rgba(57, 211, 83, 0.8);
   --calendar-color-50: rgba(38, 166, 65, 0.8);
@@ -26,7 +26,7 @@
   --black: #000;
   --red: #eb4d4b;
 
-  --border-radius: 10px;
+  --default-border-radius: 10px;
 }
 
 * {
@@ -45,7 +45,7 @@ body {
 input {
   height: 50px;
   border: 0.5px #ddd solid;
-  border-radius: var(--border-radius);
+  border-radius: var(--default-border-radius);
   padding: 0 5px;
   font-size: 23px;
   transition: all 0.3s;
@@ -65,7 +65,7 @@ button {
   padding: 10px;
   border: none;
   color: var(--white);
-  border-radius: var(--border-radius);
+  border-radius: var(--default-border-radius);
   font-size: 31px;
 
   &:hover {

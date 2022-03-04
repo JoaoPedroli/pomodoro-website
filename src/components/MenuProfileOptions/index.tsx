@@ -31,7 +31,7 @@ export const MenuProfileOptions = () => {
     <h2 style={{marginBottom: 20}}>Welcome {username}</h2>
 
     <div style={is('/dashboard') && {
-      background: 'var(--primary-shadow)',
+      background: 'var(--dark-primary)',
       color: 'var(--white)',
     }}>
       Dashboard
