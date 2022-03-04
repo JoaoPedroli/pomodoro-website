@@ -24,7 +24,7 @@ type AuthContextData = {
   email: string,
   isLoading: boolean,
   isLoadingAuth: boolean,
-  createUserWithEmailAndPassword: ({}: UserDataProps) => any,
+  createUserWithEmailAndPassword: (JSON: UserDataProps) => any,
   createUserWithGoogle: () => any,
   signIn: (email: string, password: string) => any,
   signOut: () => any,
@@ -34,7 +34,26 @@ type AuthContextProviderProps = {
   children: ReactNode;
 };
 
-export const AuthContext = createContext({} as AuthContextData);
+const defaultUserSignedDataProps: UserSignedDataProps = {
+  uid: "",
+  email: "",
+  username: "",
+};
+
+const defaultAuthContextData: AuthContextData = {
+  isSigned: false,
+  userData: defaultUserSignedDataProps,
+  username: "",
+  email: "",
+  isLoading: false,
+  isLoadingAuth: false,
+  createUserWithEmailAndPassword: () => {},
+  createUserWithGoogle: () => {},
+  signIn: () => {},
+  signOut: () => {},
+};
+
+export const AuthContext = createContext(defaultAuthContextData);
 
 export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
   const history = useHistory();
@@ -78,7 +97,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     const { uid, username, email } = userData;
 
     const redirectAndSendFeedback = () => {
-      history.push('/dashboard');
+      history.replace('/dashboard');
       toast.success('Bem Vindo a plataforma!');
     };
 

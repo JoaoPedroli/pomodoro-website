@@ -23,7 +23,20 @@ type PomodoroContextProviderProps = {
   children: ReactNode;
 };
 
-export const PomodoroContext = createContext({} as PomodoroContextData);
+const defaultPomodoroContextData: PomodoroContextData = {
+  isStart: false,
+  isStudy: false,
+  isShortBreak: false,
+  isLongBreak: false,
+  isLoading: false,
+  totalPomodorosCompleted: 0,
+  theme: "",
+  themeShadow: "",
+  handleChangeStatus: () => {},
+  handleMinutesToSeconds: () => 0,
+};
+
+export const PomodoroContext = createContext(defaultPomodoroContextData);
 
 export const PomodoroContextProvider = (
   { children }: PomodoroContextProviderProps,

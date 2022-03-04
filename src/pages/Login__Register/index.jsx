@@ -1,17 +1,15 @@
 import { useEffect, useState } from "react";
 import {
-  Form,
-  FormGroup,
-  FormControl,
-  FormLabel,
   Button,
   Col,
+  Form,
+  FormControl,
+  FormGroup,
+  FormLabel,
 } from "react-bootstrap";
-
-import styles from "./styles.module.scss";
-
 import { useAuth } from "../../contexts/authContext";
 import { usePomodoro } from "../../contexts/pomodoroContext";
+import styles from "./styles.module.scss";
 
 export const Login__Register = (props) => {
   const { createUserWithEmailAndPassword, signIn } = useAuth();
@@ -23,9 +21,9 @@ export const Login__Register = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  useEffect(() => {
-    const resetStatus = () => handleChangeStatus("start");
+  const resetStatus = () => handleChangeStatus("start");
 
+  useEffect(() => {
     resetStatus();
   }, []);
 

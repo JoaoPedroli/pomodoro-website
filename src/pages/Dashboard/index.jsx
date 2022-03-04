@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
-
-import styles from "./styles.module.scss";
-
-import firebase from "../../database/firebaseConnection";
-
 import { CalendarHeatMap } from "../../components/CalendarHeatMap";
-import { MenuProfileOptions } from "../../components/MenuProfileOptions";
-
-import { usePomodoro } from "../../contexts/pomodoroContext";
 import { Loader } from "../../components/Loader";
+import { MenuProfileOptions } from "../../components/MenuProfileOptions";
+import { usePomodoro } from "../../contexts/pomodoroContext";
+import firebase from "../../database/firebaseConnection";
+import styles from "./styles.module.scss";
 
 export const Dashboard = () => {
   const { handleChangeStatus } = usePomodoro();
@@ -16,12 +12,19 @@ export const Dashboard = () => {
   const [pomodoroDays, setPomodoroDays] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const resetThemeAndProcess = () => handleChangeStatus("start");
+  const getUid = () => JSON.parse(localStorage.getItem("UserData")).uid;
+
   useEffect(() => {
-    const resetThemeAndProcess = () => handleChangeStatus("start");
-
-    const getUid = () => JSON.parse(localStorage.getItem("UserData")).uid;
-
-    const getPomodoroDays = async () => {
+    resetThemeAndProcess();
+    fetchData();
+    setLoading(false);
+    
+    async function fetchData() {
+      await getPomodoroDays();
+    }
+    
+    async function getPomodoroDays() {
       const array = [];
 
       await firebase
@@ -41,20 +44,14 @@ export const Dashboard = () => {
 
       setPomodoroDays(array);
     };
-
-    const doIt = async () => {
-      resetThemeAndProcess();
-      await getPomodoroDays();
-      setLoading(false);
-    };
-
-    doIt();
   }, []);
 
-  if(loading) {
-    return <div className={styles.container}>
-      <Loader/>
-    </div>
+  if (loading) {
+    return (
+      <div className={styles.container}>
+        <Loader />
+      </div>
+    );
   }
 
   return (
