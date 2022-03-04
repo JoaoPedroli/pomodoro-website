@@ -31,8 +31,8 @@ export const Login__Register = (props) => {
     setOptionAuth(props.location.search);
   }, [props.location.search]);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
     console.log(optionAuth);
 
@@ -55,6 +55,7 @@ export const Login__Register = (props) => {
             <FormLabel>Username</FormLabel>
             <FormControl
               required
+              name="username"
               type="text"
               placeholder="Enter your username"
               value={username}
@@ -67,6 +68,7 @@ export const Login__Register = (props) => {
           <FormLabel>Email</FormLabel>
           <FormControl
             required
+            name="email"
             type="email"
             placeholder="Enter your email"
             value={email}

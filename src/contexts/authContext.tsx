@@ -34,26 +34,7 @@ type AuthContextProviderProps = {
   children: ReactNode;
 };
 
-const defaultUserSignedDataProps: UserSignedDataProps = {
-  uid: "",
-  email: "",
-  username: "",
-};
-
-const defaultAuthContextData: AuthContextData = {
-  isSigned: false,
-  userData: defaultUserSignedDataProps,
-  username: "",
-  email: "",
-  isLoading: false,
-  isLoadingAuth: false,
-  createUserWithEmailAndPassword: () => {},
-  createUserWithGoogle: () => {},
-  signIn: () => {},
-  signOut: () => {},
-};
-
-export const AuthContext = createContext(defaultAuthContextData);
+export const AuthContext = createContext<AuthContextData | null>(null);
 
 export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
   const history = useHistory();
