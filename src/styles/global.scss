@@ -10,6 +10,8 @@
   --dark-blue: #0097e6;
   --light-blue: #22a6b3;
   --dark-light-blue: #20919b;
+  --red: #e66c4f;
+  --dark-red: #b3543c;
 
   --calendar-color-25: rgba(57, 211, 83, 0.8);
   --calendar-color-50: rgba(38, 166, 65, 0.8);
@@ -24,9 +26,9 @@
   --white5: #bbb;
   --white6: #aaa;
   --black: #000;
-  --red: #eb4d4b;
 
   --default-border-radius: 10px;
+  --default-box-shadow: 2px 2px 10px gray;
 }
 
 * {
@@ -60,17 +62,52 @@ select,
 a {
   cursor: pointer;
 }
-button {
+
+@mixin buttonConfigs($background: var(--primary), $shadow-color: var(--dark-primary)) {
   transition: all 0.3s;
   padding: 10px;
   border: none;
-  color: var(--white);
+  background: $background;
+  color: #fff;
+  box-shadow: 0 .2rem $shadow-color;
   border-radius: var(--default-border-radius);
   font-size: 31px;
-
+  
   &:hover {
-    opacity: 0.9;
+    box-shadow: 0 .4rem $shadow-color;
+    transform: translateY(-0.2rem);
   }
+
+  &:active {
+    box-shadow: none;
+    transform: translateY(0.2rem);
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+  
+  &:disabled:hover {
+    transform: translate(0);
+  }
+}
+
+.default-button {
+  @include buttonConfigs();
+}
+
+.blue-button {
+  @include buttonConfigs(var(--blue), var(--dark-blue));
+}
+
+.light-blue-button {
+  @include buttonConfigs(var(--light-blue), var(--dark-light-blue));
+}
+
+.red-button {
+  @include buttonConfigs(var(--red), var(--dark-red));
 }
 
 #pointer {

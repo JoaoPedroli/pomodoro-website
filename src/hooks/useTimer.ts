@@ -39,13 +39,13 @@ export const useTimer = (initialState: number): UseTimerData => {
   };
 
   const toggleShortBreak = () => {
-    handleChangeStatus('short break');
+    handleChangeStatus('short-break');
     // setTimeInSeconds(handleMinutesToSeconds(5));
     setTimeInSeconds(1);
   };
 
   const toggleLongBreak = () => {
-    handleChangeStatus('long break');
+    handleChangeStatus('long-break');
     // setTimeInSeconds(handleMinutesToSeconds(15));
     setTimeInSeconds(1);
   };

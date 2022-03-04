@@ -1,5 +1,3 @@
-import styles from "./styles.module.scss";
-
 import { usePomodoro } from "../../contexts/pomodoroContext";
 
 type ButtonTimerTypes = {
@@ -17,29 +15,29 @@ export const ButtonTimer = ({
   handlePause,
   handleResume,
 }: ButtonTimerTypes) => {
-  const { theme, themeShadow, isStart } = usePomodoro();
+  const { status, isStart } = usePomodoro();
 
-  return isStart
-    ? <button
-      id={styles.buttonTimer}
-      style={{
-        background: theme,
-        boxShadow: `${themeShadow} 0 6px 0`,
-      }}
+  return isStart ? (
+    <button
+      style={{ width: "100%" }}
+      className="default-button"
       onClick={handleStart}
-      >
-        Start
-      </button>
-
-    : <button
-      id={styles.buttonTimer}
-      style={{
-        background: theme,
-        boxShadow: !isPaused && `${themeShadow} 0 6px 0`,
-        marginTop: isPaused && 6,
-      }}
+    >
+      Start
+    </button>
+  ) : (
+    <button
+      style={{ width: "100%" }}
+      className={
+        status === "start"
+          ? "default-button"
+          : status === "study"
+          ? "blue-button"
+          : "light-blue-button"
+      }
       onClick={isPaused ? handlePause : handleResume}
-      >
-        {isPaused ? "Pause" : "Resume"}
-      </button>;
+    >
+      {isPaused ? "Pause" : "Resume"}
+    </button>
+  );
 };

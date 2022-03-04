@@ -18,7 +18,7 @@ export const Routes = () => {
         isSigned ? (
           <Component {...props} />
         ) : (
-          <Redirect to={{ pathname: "/", state: { from: props.location } }} />
+          <Redirect to={{ pathname: "*", state: { from: props.location } }} />
         )
       }
     />
@@ -31,7 +31,7 @@ export const Routes = () => {
         !isSigned ? (
           <Component {...props} />
         ) : (
-          <Redirect to={{ pathname: "*", state: { from: props.location } }} />
+          <Redirect to={{ pathname: "/dashboard", state: { from: props.location } }} />
         )
       }
     />
