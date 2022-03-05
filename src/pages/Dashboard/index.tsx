@@ -10,7 +10,7 @@ export const Dashboard = () => {
   const { handleChangeStatus } = usePomodoro();
 
   const [pomodoroDays, setPomodoroDays] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   const resetThemeAndProcess = () => handleChangeStatus("start");
   const getUid = () => JSON.parse(localStorage.getItem("UserData")).uid;
@@ -18,43 +18,39 @@ export const Dashboard = () => {
   useEffect(() => {
     resetThemeAndProcess();
     fetchData();
-    setLoading(false);
-    
+    setIsLoading(false);
+
     async function fetchData() {
       await getPomodoroDays();
     }
-    
-    async function getPomodoroDays() {
-      const array = [];
-
-      await firebase
-        .firestore()
-        .collection("users")
-        .doc(getUid())
-        .collection("study-time-days")
-        .get()
-        .then((snapshot) => {
-          snapshot.forEach((doc) => {
-            array.push({
-              date: doc.id,
-              countInMinutes: doc.data().duration,
-            });
-          });
-        });
-
-      setPomodoroDays(array);
-    };
   }, []);
 
-  if (loading) {
-    return (
-      <div className={styles.container}>
-        <Loader />
-      </div>
-    );
+  async function getPomodoroDays() {
+    const array = [];
+
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(getUid())
+      .collection("study-time-days")
+      .get()
+      .then((snapshot) => {
+        snapshot.forEach((doc) => {
+          array.push({
+            date: doc.id,
+            countInMinutes: doc.data().duration,
+          });
+        });
+      });
+
+    setPomodoroDays(array);
   }
 
-  return (
+  return isLoading ? (
+    <div className={styles.container}>
+      <Loader />
+    </div>
+  ) : (
     <div className={styles.container}>
       <MenuProfileOptions />
 

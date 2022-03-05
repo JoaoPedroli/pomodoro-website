@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { format, getDate } from "date-fns";
 import { createContext, ReactNode, useContext, useState } from "react";
 import Toast from "../components/Toast";
 import firebase from "../database/firebaseConnection";
@@ -44,6 +44,12 @@ export const PomodoroContextProvider = ({
 
   const handleMinutesToSeconds = (minutes: number): number => minutes * 60;
 
+  const getCurrentDateString = () => {
+    const currentDay = new Date();
+    currentDay.setHours(0), currentDay.setMinutes(0), currentDay.setSeconds(0);
+    return `${currentDay}`;
+  };
+
   const getAndIncreaseDuration = async (
     location: {
       collection: string;
@@ -52,20 +58,22 @@ export const PomodoroContextProvider = ({
     increment: number
   ): Promise<{ error?: {} }> => {
     const { collection, doc } = location;
-    let duration;
+    return await handleIncrease();
 
-    const get = async () => {
-      await firebase
+    async function getDuration() {
+      return await firebase
         .firestore()
         .collection("users")
         .doc(uid)
         .collection(collection)
         .doc(doc)
         .get()
-        .then((doc) => (duration = doc.data()?.duration ?? 0));
-    };
+        .then((doc) => doc.data()?.duration ?? 0);
+    }
 
-    const increase = async (): Promise<{ error?: {} }> => {
+    async function handleIncrease(): Promise<{ error?: {} }> {
+      let duration = await getDuration();
+
       return await firebase
         .firestore()
         .collection("users")
@@ -81,16 +89,13 @@ export const PomodoroContextProvider = ({
         .catch((error) => {
           return { error };
         });
-    };
-
-    await get();
-    return await increase();
+    }
   };
 
-  const handleAddStudyTimeAll = async (): Promise<{ error?: {} }> => {
+  const handleAddStudyTime = async (): Promise<{ error?: {} }> => {
     const location = {
-      collection: "pomodoro-time-all",
-      doc: "study",
+      collection: "study-time-days",
+      doc: getCurrentDateString(),
     };
 
     const increment = 25;
@@ -98,10 +103,10 @@ export const PomodoroContextProvider = ({
     return await getAndIncreaseDuration(location, increment);
   };
 
-  const handleAddShortBreakTimeAll = async (): Promise<{ error?: {} }> => {
+  const handleAddShortBreakTime = async (): Promise<{ error?: {} }> => {
     const location = {
-      collection: "pomodoro-time-all",
-      doc: "short-break",
+      collection: "short-break-time-days",
+      doc: getCurrentDateString(),
     };
 
     const increment = 5;
@@ -109,26 +114,13 @@ export const PomodoroContextProvider = ({
     return await getAndIncreaseDuration(location, increment);
   };
 
-  const handleAddLongBreakTimeAll = async (): Promise<{ error?: {} }> => {
+  const handleAddLongBreakTime = async (): Promise<{ error?: {} }> => {
     const location = {
-      collection: "pomodoro-time-all",
-      doc: "long-break",
+      collection: "long-break-time-days",
+      doc: getCurrentDateString(),
     };
 
     const increment = 15;
-
-    return await getAndIncreaseDuration(location, increment);
-  };
-
-  const handleAddPomodoroDayMinutes = async (): Promise<{ error?: {} }> => {
-    const date = format(new Date(), "yyyy-MM-dd");
-
-    const location = {
-      collection: "study-time-days",
-      doc: date,
-    };
-
-    const increment = 25;
 
     return await getAndIncreaseDuration(location, increment);
   };
@@ -172,9 +164,9 @@ export const PomodoroContextProvider = ({
         const wasShortBreak = Boolean(totalPomodorosCompleted > 0);
         let error = {};
         if (wasShortBreak) {
-          error = (await handleAddShortBreakTimeAll()).error;
+          error = (await handleAddShortBreakTime()).error;
         } else {
-          error = (await handleAddLongBreakTimeAll()).error;
+          error = (await handleAddLongBreakTime()).error;
         }
 
         if (error) {
@@ -201,12 +193,10 @@ export const PomodoroContextProvider = ({
       }
 
       async function saveProgressInFirebase() {
-        const { error } = await handleAddPomodoroDayMinutes();
-        const { error: error2 } = await handleAddStudyTimeAll();
-        if (error || error2) {
+        const { error } = await handleAddStudyTime();
+        if (error) {
           Toast.error();
           console.log(error ?? "");
-          console.log(error2 ?? "");
         } else {
           Toast.success(
             "Congratulations you finished 25 minutes of study, they were added to your history today, check the dashboard later. Time to relax ^^"
@@ -235,12 +225,10 @@ export const PomodoroContextProvider = ({
       }
 
       async function saveProgessinFirebase() {
-        const { error } = await handleAddPomodoroDayMinutes();
-        const { error: error2 } = await handleAddStudyTimeAll();
+        const { error } = await handleAddStudyTime();
         if (error) {
           Toast.error();
           console.log(error ?? "");
-          console.log(error2 ?? "");
         } else {
           Toast.success(
             "Congratulations you finished 25 minutes of study, they were added to your history today, check the dashboard later. Time to relax ^^"

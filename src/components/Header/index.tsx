@@ -51,7 +51,7 @@ export const Header = () => {
       </span>
 
       {isSigned
-      ? <FiUser id='pointer' className={styles.userIcon} onClick={() => handleRedirectToDashboard()}/>
+      ? <FiUser id='pointer' className={styles.userIcon} style={{color: theme}} onClick={() => handleRedirectToDashboard()}/>
       : <div className={styles.auth}>
           <button
           id={styles.login}

@@ -31,8 +31,8 @@ export const CalendarHeatMap = ({ pomodoroDays }: PomodoroDaysTypes) => {
       <CalendarHeatmap
         values={pomodoroDays ?? []}
         showWeekdayLabels
-        startDate={new Date("2020-12-31")}
-        endDate={new Date("2021-12-31")}
+        startDate={new Date("2021-12-31")}
+        endDate={new Date("2022-12-31")}
         titleForValue={(value) =>
           value?.countInMinutes &&
           `${format(new Date(value.date), "MMM dd, yyyy")} - ${

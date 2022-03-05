@@ -57,6 +57,7 @@ export const MenuProfileOptions = () => {
 
       {pageOptions.map(({ isSignOut, name, icon, route }) => (
         <div
+          key={name}
           className={
             isSignOut
               ? styles.divExit

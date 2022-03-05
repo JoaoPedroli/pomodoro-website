@@ -6,14 +6,14 @@
   width: 100%;
   color: var(--white);
   padding: 1rem 3rem;
-  transition: all 1s;
+  transition: all var(--default-transition-time);
 
   .userIcon {
     background: var(--white);
-    color: var(--primary);
     border-radius: 5rem;
     font-size: 3rem;
     cursor: pointer;
+    transition: all var(--default-transition-time);
   }
 }
 
