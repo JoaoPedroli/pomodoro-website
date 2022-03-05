@@ -32,6 +32,8 @@ export const ButtonTimer = ({
         status === "start"
           ? "default-button"
           : status === "study"
+          ? "yellow-button"
+          : status === "short-break"
           ? "blue-button"
           : "light-blue-button"
       }

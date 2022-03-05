@@ -98,6 +98,10 @@ a {
   @include buttonConfigs();
 }
 
+.yellow-button {
+  @include buttonConfigs(var(--yellow), var(--dark-yellow));
+}
+
 .blue-button {
   @include buttonConfigs(var(--blue), var(--dark-blue));
 }
