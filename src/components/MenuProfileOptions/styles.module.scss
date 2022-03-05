@@ -1,28 +1,50 @@
 .container {
-  background: var(--white3);
+  background: var(--white1);
   width: 300px;
   height: 100%;
-  padding-top: 10px;
+  padding-top: 2rem;
+  box-shadow: 1px 1px 7px rgb(192, 192, 192);
+  border-end-end-radius: 5rem;
 
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  div {
+  h2 {
+    text-align: center;
+  }
+
+  .pageOption {
+    color: var(--primary);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
     cursor: pointer;
     margin: 5px 0;
     padding: 10px 10px 10px 25px;
     width: 100%;
     transition: all 0.2s;
 
+    span {
+      font-size: 20px;
+    }
+
     &:hover {
       background: var(--primary);
       color: var(--white);
-      border-radius: 5px;
+      transform: translateX(10px);
     }
   }
 
+  .activePageOption {
+    @extend .pageOption;
+    background: var(--light-primary);
+    color: var(--primary);
+  }
+
   .divExit {
+    @extend .pageOption;
     color: var(--red);
 
     display: flex;
