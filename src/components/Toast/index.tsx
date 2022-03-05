@@ -11,6 +11,10 @@ class Toast {
         "Oops! An error occurred while saving your progress, please contact support."
     );
   }
+
+  info(message: string) {
+    toast.info(message);
+  }
 }
 
 export default new Toast();

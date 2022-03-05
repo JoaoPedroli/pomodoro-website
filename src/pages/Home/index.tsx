@@ -68,8 +68,7 @@ export const Home = () => {
           {isStart || (
             <button
               style={{
-                padding: !isPaused && "13px 10px",
-                marginTop: !isPaused ? 20 : 14,
+                marginTop: 14,
                 fontSize: 25,
               }}
               className="red-button"
