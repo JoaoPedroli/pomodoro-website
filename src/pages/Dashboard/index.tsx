@@ -18,10 +18,10 @@ export const Dashboard = () => {
   useEffect(() => {
     resetThemeAndProcess();
     fetchData();
-    setIsLoading(false);
-
+    
     async function fetchData() {
       await getPomodoroDays();
+      setIsLoading(false);
     }
   }, []);
 
@@ -46,19 +46,18 @@ export const Dashboard = () => {
     setPomodoroDays(array);
   }
 
-  return isLoading ? (
-    <div className={styles.container}>
-      <Loader />
-    </div>
-  ) : (
+  return (
     <div className={styles.container}>
       <MenuProfileOptions />
 
-      <div className={styles.subcontainer}>
-        <h1>Dashboard</h1>
+      {isLoading
+      ? <Loader />
+      : <div className={styles.subcontainer}>
+          <h1>Dashboard</h1>
 
-        <CalendarHeatMap pomodoroDays={pomodoroDays} />
-      </div>
+          <CalendarHeatMap pomodoroDays={pomodoroDays} />
+        </div>
+      }
     </div>
   );
 };
