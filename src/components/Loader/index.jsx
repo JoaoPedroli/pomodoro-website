@@ -3,13 +3,12 @@ import { usePomodoro } from "../../contexts/pomodoroContext";
 
 import styles from "./styles.module.scss";
 
-export const Loader = (props) => {
-  const { size, color } = props;
+export const Loader = ({ size = "60", color = "" }) => {
   const { theme } = usePomodoro();
 
   const { containerProps, indicatorEl } = useLoading({
     loading: true,
-    indicator: <Puff width={size ?? "60"} color={color ?? theme} />,
+    indicator: <Puff width={size} color={color ?? theme} />,
   });
 
   return (
