@@ -3,16 +3,41 @@ import CalendarHeatmap from "react-calendar-heatmap";
 import "react-calendar-heatmap/dist/styles.css";
 import "./styles.css";
 
-type PomodoroDayTypes = {
-  date: string;
-  countInMinutes: number;
+type PomodoroDayProps = {
+  date?: string;
+  countInMinutes?: number;
 };
 
-type PomodoroDaysTypes = {
-  pomodoroDays: Array<PomodoroDayTypes>;
+type PomodoroDaysProps = {
+  pomodoroDays: Array<PomodoroDayProps>;
 };
 
-export const CalendarHeatMap = ({ pomodoroDays }: PomodoroDaysTypes) => {
+export const CalendarHeatMap = ({ pomodoroDays }: PomodoroDaysProps) => {
+  const currentDay = new Date();
+
+  const formatDate = (date: Date): string => format(date, "yyyy-MM-dd");
+
+  const getTomorrowsDate = (): Date => {
+    const tomorrowsDate = new Date();
+    tomorrowsDate.setDate(currentDay.getDate() + 1);
+    return tomorrowsDate;
+  };
+
+  const getTomorrowsDateLastYear = (): Date => {
+    const tomorrowsDateLastYear = new Date();
+    tomorrowsDateLastYear.setFullYear(currentDay.getFullYear() - 1);
+    return tomorrowsDateLastYear;
+  };
+
+  const getTitleForValue = ({
+    date,
+    countInMinutes,
+  }: PomodoroDayProps): string =>
+    countInMinutes !== undefined &&
+    `${format(new Date(date), "MMM dd, yyyy")} - ${countInMinutes} minute${
+      countInMinutes === 1 ? "" : "s"
+    } of study`;
+
   const findValueCountRange = (countInMinutes: number) => {
     if (countInMinutes <= 25) {
       return 25;
@@ -31,17 +56,12 @@ export const CalendarHeatMap = ({ pomodoroDays }: PomodoroDaysTypes) => {
       <CalendarHeatmap
         values={pomodoroDays ?? []}
         showWeekdayLabels
-        startDate={new Date("2021-12-31")}
-        endDate={new Date("2022-12-31")}
-        titleForValue={(value) =>
-          value?.countInMinutes &&
-          `${format(new Date(value.date), "MMM dd, yyyy")} - ${
-            value.countInMinutes
-          } minute${value.countInMinutes > 1 && "s"} of study`
-        }
-        classForValue={(value) =>
-          value
-            ? `color-scale-${findValueCountRange(value.countInMinutes)}`
+        startDate={formatDate(getTomorrowsDateLastYear())}
+        endDate={formatDate(getTomorrowsDate())}
+        titleForValue={(value: PomodoroDayProps) => getTitleForValue(value)}
+        classForValue={({ countInMinutes }: PomodoroDayProps) =>
+          countInMinutes
+            ? `color-scale-${findValueCountRange(countInMinutes)}`
             : "color-empty"
         }
       />

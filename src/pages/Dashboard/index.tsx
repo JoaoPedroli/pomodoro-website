@@ -26,7 +26,8 @@ export const Dashboard = () => {
   }, []);
 
   async function getPomodoroDays() {
-    const array = [];
+    const array = new Array(366);
+    let currentIndex = 0;
 
     await firebase
       .firestore()
@@ -36,12 +37,24 @@ export const Dashboard = () => {
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {
-          array.push({
+          const intervalBetweenTodayAndSnapshotDay = new Date().getDate() - new Date(doc.id).getDate();
+          array[intervalBetweenTodayAndSnapshotDay] = {
             date: doc.id,
             countInMinutes: doc.data().duration,
-          });
+          }, ++currentIndex;
         });
       });
+    
+    for(let i = 0; i < 366; ++i) {
+      if(!array[i]?.date) {
+        const newDate = new Date();
+        newDate.setDate(newDate.getDate() - i);
+        array[i] = {
+          date: String(newDate),
+          countInMinutes: 0,
+        };
+      }
+    }
 
     setPomodoroDays(array);
   }
