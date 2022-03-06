@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import CalendarHeatmap from "react-calendar-heatmap";
 import "react-calendar-heatmap/dist/styles.css";
-import "./styles.css";
+import styles from "./styles.module.scss";
 
 type PomodoroDayProps = {
   date?: string;
@@ -51,8 +51,13 @@ export const CalendarHeatMap = ({ pomodoroDays }: PomodoroDaysProps) => {
     return 200;
   };
 
+  const getClassForValue = (countInMinutes: number) =>
+    countInMinutes
+      ? `color-scale-${findValueCountRange(countInMinutes)}`
+      : "color-empty";
+
   return (
-    <div className="calendar-heatmap">
+    <div className={styles["react-calendar-heatmap"]}>
       <CalendarHeatmap
         values={pomodoroDays ?? []}
         showWeekdayLabels
@@ -60,9 +65,7 @@ export const CalendarHeatMap = ({ pomodoroDays }: PomodoroDaysProps) => {
         endDate={formatDate(getTomorrowsDate())}
         titleForValue={(value: PomodoroDayProps) => getTitleForValue(value)}
         classForValue={({ countInMinutes }: PomodoroDayProps) =>
-          countInMinutes
-            ? `color-scale-${findValueCountRange(countInMinutes)}`
-            : "color-empty"
+          styles[getClassForValue(countInMinutes)]
         }
       />
     </div>
