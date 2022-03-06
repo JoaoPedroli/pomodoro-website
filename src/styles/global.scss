@@ -65,6 +65,23 @@ a {
   cursor: pointer;
 }
 
+.container-box-shadow {
+  background: var(--white);
+  padding: 38px;
+  box-shadow: var(--default-box-shadow);
+  border-radius: var(--default-border-radius);
+}
+
+.div-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.div-column {
+  display: flex;
+  flex-direction: column;
+}
+
 @mixin buttonConfigs($background: var(--primary), $shadow-color: var(--dark-primary)) {
   transition: all 0.3s;
   padding: 10px;
