@@ -21,12 +21,6 @@ export const Login__Register = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const resetStatus = () => handleChangeStatus("start");
-
-  useEffect(() => {
-    resetStatus();
-  }, []);
-
   useEffect(() => {
     setOptionAuth(props.location.search);
   }, [props.location.search]);

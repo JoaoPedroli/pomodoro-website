@@ -1,12 +1,10 @@
 import { usePomodoro } from "../../contexts/pomodoroContext";
 
 type ButtonTimerTypes = {
-  isActive: boolean;
   isPaused: boolean;
   handleStart: () => any;
   handlePause: () => any;
   handleResume: () => any;
-  handleStop: () => any;
 };
 
 export const ButtonTimer = ({
@@ -35,7 +33,7 @@ export const ButtonTimer = ({
           ? "yellow-button"
           : status === "short-break"
           ? "blue-button"
-          : "light-blue-button"
+          : "blue1-button"
       }
       onClick={isPaused ? handlePause : handleResume}
     >

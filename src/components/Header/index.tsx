@@ -19,25 +19,21 @@ export const Header = () => {
     if (isStart) return true;
 
     const confirm = window.confirm(
-      `Deseja mesmo ${
+      `Do you really want to ${
         isSigned
-          ? "ver seu perfil"
-          : `fazer o ${optionAuth === "signin" ? "login" : "cadastro"}`
-      } agora? Você perderá todo o processo atual.`
+          ? "see your profile"
+          : `${optionAuth === "signin" ? "login" : "register"}`
+      } now? You will lose all current process.`
     );
 
     return Boolean(confirm);
   };
 
   const handleRedirectToDashboard = () => {
-    if (!handleVerifAndConfirmRedirect()) return;
-
     history.push("/dashboard");
   };
 
   const handleRedirectToSign = (optionAuth: string) => {
-    if (!handleVerifAndConfirmRedirect(optionAuth)) return;
-
     history.push(`welcome?${optionAuth}`);
   };
 

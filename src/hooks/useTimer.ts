@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
-import { usePomodoro } from "../contexts/pomodoroContext";
+import { StatusContext } from "../contexts/pomodoroContext";
 
-type UseTimerData = {
+export interface UseTimerProps {
   timeInSeconds: number;
   isActive: boolean;
   isPaused: boolean;
@@ -9,9 +9,20 @@ type UseTimerData = {
   handlePause: () => any;
   handleResume: () => any;
   handleStop: () => any;
+}
+
+export interface PomodoroDataProps {
+  isStudy: boolean;
+  totalPomodorosCompleted: number;
+  status: StatusContext;
+  saveStudyProgressInFirebase: () => Promise<any>;
+  saveShortBreakProgressInFirebase: () => Promise<any>;
+  saveLongBreakProgressInFirebase: () => Promise<any>;
+  handleChangeStatus: (status: string) => any;
+  convertMinutesToSeconds: (minutes: number) => number;
 };
 
-export const useTimer = (initialState: number): UseTimerData => {
+export const useTimer = (pomodoroData: PomodoroDataProps): UseTimerProps => {
   const {
     isStudy,
     totalPomodorosCompleted,
@@ -20,38 +31,42 @@ export const useTimer = (initialState: number): UseTimerData => {
     saveStudyProgressInFirebase,
     saveShortBreakProgressInFirebase,
     saveLongBreakProgressInFirebase,
-  } = usePomodoro();
+    convertMinutesToSeconds,
+  } = pomodoroData;
 
-  const [timeInSeconds, setTimeInSeconds] = useState(initialState);
+  const [timeInSeconds, setTimeInSeconds] = useState(
+    convertMinutesToSeconds(25)
+  );
   const [isActive, setIsActive] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
 
   const countRef = useRef(null);
 
   const NUM_NEEDED_FOR_LONG_BREAK = 4;
+  const DEBUG = true;
+
+  const getStudyTime = () => (DEBUG ? 1 : convertMinutesToSeconds(25));
+  const getShortBreakTime = () => (DEBUG ? 1 : convertMinutesToSeconds(5));
+  const getLongBreakTime = () => (DEBUG ? 1 : convertMinutesToSeconds(15));
 
   const toggleStart = () => {
     handleChangeStatus("start");
-    // setTimeInSeconds(handleMinutesToSeconds(25));
-    setTimeInSeconds(1);
+    setTimeInSeconds(getStudyTime());
   };
 
   const toggleStudy = () => {
     handleChangeStatus("study");
-    // setTimeInSeconds(handleMinutesToSeconds(25));
-    setTimeInSeconds(1);
+    setTimeInSeconds(getStudyTime());
   };
 
   const toggleShortBreak = () => {
     handleChangeStatus("short-break");
-    // setTimeInSeconds(handleMinutesToSeconds(5));
-    setTimeInSeconds(1);
+    setTimeInSeconds(getShortBreakTime());
   };
 
   const toggleLongBreak = () => {
     handleChangeStatus("long-break");
-    // setTimeInSeconds(handleMinutesToSeconds(15));
-    setTimeInSeconds(1);
+    setTimeInSeconds(getLongBreakTime());
   };
 
   const handleStart = () => {
@@ -67,7 +82,7 @@ export const useTimer = (initialState: number): UseTimerData => {
   };
 
   const verifyAndSaveProgressInFirebase = async () => {
-    if (status === "start" || status === "study") { 
+    if (status === "start" || status === "study") {
       await saveStudyProgressInFirebase();
     } else if (totalPomodorosCompleted > 0) {
       await saveShortBreakProgressInFirebase();
@@ -126,14 +141,14 @@ export const useTimer = (initialState: number): UseTimerData => {
       setIsActive(false);
       setIsPaused(false);
       toggleStart();
-    };
+    }
 
     function handleConfirmStop(): boolean {
       const confirm = window.confirm(
-        "Tem certeza que deseja parar o ciclo? O processo atual será perdido."
+        "Are you sure you want to stop the cycle? The current process will be lost."
       );
       return Boolean(confirm);
-    };
+    }
   };
 
   return {

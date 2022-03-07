@@ -8,11 +8,11 @@ export const Loader = ({ size = "60", color = "" }) => {
 
   const { containerProps, indicatorEl } = useLoading({
     loading: true,
-    indicator: <Puff width={size} color={color ?? theme} />,
+    indicator: <Puff width={size} />,
   });
 
   return (
-    <section {...containerProps} className={styles.container}>
+    <section {...containerProps} className={styles.container} style={{color: theme}}>
       {indicatorEl}
     </section>
   );

@@ -2,23 +2,23 @@ import { ProgressBar } from "react-bootstrap";
 import { ButtonTimer } from "../../components/ButtonTimer";
 import { Loader } from "../../components/Loader";
 import { usePomodoro } from "../../contexts/pomodoroContext";
-import { useTimer } from "../../hooks/useTimer";
 import { formatTime } from "../../utils/formatTime";
 import styles from "./styles.module.scss";
 
 export const Home = () => {
-  const { isStart, isStudy, isShortBreak, isLoading, handleMinutesToSeconds } =
-    usePomodoro();
-
   const {
+    isStart,
+    isStudy,
+    isShortBreak,
+    isLoading,
+    convertMinutesToSeconds,
     timeInSeconds,
-    isActive,
     isPaused,
     handleStart,
     handlePause,
     handleResume,
     handleStop,
-  } = useTimer(handleMinutesToSeconds(25));
+  } = usePomodoro();
 
   return (
     <div className={styles.container}>
@@ -35,10 +35,10 @@ export const Home = () => {
               now={timeInSeconds}
               max={
                 isStudy
-                  ? handleMinutesToSeconds(25)
+                  ? convertMinutesToSeconds(25)
                   : isShortBreak
-                  ? handleMinutesToSeconds(5)
-                  : handleMinutesToSeconds(15)
+                  ? convertMinutesToSeconds(5)
+                  : convertMinutesToSeconds(15)
               }
               id={styles.progressTimer}
             />
@@ -57,12 +57,10 @@ export const Home = () => {
           <h2 id={styles.time}>{formatTime(timeInSeconds)}</h2>
 
           <ButtonTimer
-            isActive={isActive}
             isPaused={isPaused}
             handleStart={handleStart}
             handlePause={handlePause}
             handleResume={handleResume}
-            handleStop={handleStop}
           />
 
           {isStart || (

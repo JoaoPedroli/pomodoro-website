@@ -14,8 +14,7 @@
     text-align: center;
   }
 
-  .pageOption {
-    color: var(--primary);
+  @mixin usePageOptionStyles($theme) {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -25,26 +24,60 @@
     padding: 10px 10px 10px 25px;
     width: 100%;
     transition: all 0.2s;
-
+    color: $theme;
+  
     span {
       font-size: 20px;
     }
 
     &:hover {
-      background: var(--primary);
+      background: $theme;
       color: var(--white);
       transform: translateX(10px);
     }
   }
 
-  .activePageOption {
-    @extend .pageOption;
-    background: var(--light-primary);
-    color: var(--primary);
+
+  .pageOptionPrimary {
+    @include usePageOptionStyles(var(--primary));
+  }
+
+  .pageOptionYellow {
+    @include usePageOptionStyles(var(--dark-yellow));
+  }
+
+  .pageOptionBlue {
+    @include usePageOptionStyles(var(--blue));
+  }
+
+  .pageOptionBlue1 {
+    @include usePageOptionStyles(var(--dark-blue1)); 
+  }
+
+  @mixin useActivePageOptionStyles($theme, $light-theme) {
+    @include usePageOptionStyles($theme);
+    background: $light-theme;
+    color: $theme;
+  }
+
+  .activePageOptionPrimary {
+    @include useActivePageOptionStyles(var(--primary), var(--light-primary));
+  }
+
+  .activePageOptionYellow {
+    @include useActivePageOptionStyles(var(--dark-yellow), var(--light-yellow));
+  }
+
+  .activePageOptionBlue {
+    @include useActivePageOptionStyles(var(--blue), var(--light-blue));
+  }
+
+  .activePageOptionBlue1 {
+    @include useActivePageOptionStyles(var(--dark-blue1), var(--light-blue1)); 
   }
 
   .divExit {
-    @extend .pageOption;
+    @include usePageOptionStyles(var(--red));
     color: var(--red);
 
     display: flex;

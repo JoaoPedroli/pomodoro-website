@@ -11,16 +11,21 @@
   --color: var(--black);
   
   --primary: #6ab04c;
+  --dark-primary: #5e9d43;
   --light-primary: #88e26279;
   --dark-primary: #5e9d43;
   --yellow: #f9ca24;
   --dark-yellow: #e1b12c;
+  --light-yellow: #f8ce3652;
   --blue: #00a8ff;
   --dark-blue: #0097e6;
-  --light-blue: #22a6b3;
-  --dark-light-blue: #20919b;
+  --light-blue: #00aaff41;
+  --blue1: #0fd1e2;
+  --dark-blue1: #0eb0be;
+  --light-blue1: #0bb6c542;
   --red: #e66c4f;
   --dark-red: #b3543c;
+  --light-red: #e66d4f85;
 
   --calendar-color-25: rgba(35, 114, 61, .5);
   --calendar-color-50: rgba(35, 114, 61, .7);
@@ -125,8 +130,8 @@ a {
   @include buttonConfigs(var(--blue), var(--dark-blue));
 }
 
-.light-blue-button {
-  @include buttonConfigs(var(--light-blue), var(--dark-light-blue));
+.blue1-button {
+  @include buttonConfigs(var(--blue1), var(--dark-blue1));
 }
 
 .red-button {

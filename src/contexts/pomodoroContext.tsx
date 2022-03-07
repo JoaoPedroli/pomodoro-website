@@ -1,13 +1,12 @@
-import { format, getDate } from "date-fns";
-import id from "date-fns/esm/locale/id/index.js";
 import { createContext, ReactNode, useContext, useState } from "react";
 import Toast from "../components/Toast";
 import firebase from "../database/firebaseConnection";
+import { useTimer, UseTimerProps } from "../hooks/useTimer";
 import { useAuth } from "./authContext";
 
-type StatusContext = "start" | "study" | "short-break" | "long-break";
+export type StatusContext = "start" | "study" | "short-break" | "long-break";
 
-type PomodoroContextData = {
+export interface PomodoroContextProps extends UseTimerProps {
   isStart: boolean;
   isStudy: boolean;
   isShortBreak: boolean;
@@ -15,20 +14,21 @@ type PomodoroContextData = {
   isLoading: boolean;
   totalPomodorosCompleted: number;
   theme: string;
-  themeShadow: string;
+  darkTheme: string;
+  lightTheme: string,
   status: StatusContext;
   saveStudyProgressInFirebase: () => Promise<any>;
   saveShortBreakProgressInFirebase: () => Promise<any>;
   saveLongBreakProgressInFirebase: () => Promise<any>;
   handleChangeStatus: (status: string) => any;
-  handleMinutesToSeconds: (minutes: number) => number;
-};
+  convertMinutesToSeconds: (minutes: number) => number;
+}
 
 type PomodoroContextProviderProps = {
   children: ReactNode;
 };
 
-export const PomodoroContext = createContext<PomodoroContextData | null>(null);
+export const PomodoroContext = createContext<PomodoroContextProps | null>(null);
 
 export const PomodoroContextProvider = ({
   children,
@@ -42,11 +42,12 @@ export const PomodoroContextProvider = ({
   const [isShortBreak, setIsShortBreak] = useState(false);
   const [isLongBreak, setIsLongBreak] = useState(false);
   const [theme, setTheme] = useState("var(--primary)");
-  const [themeShadow, setThemeShadow] = useState("var(--dark-primary)");
+  const [darkTheme, setDarkTheme] = useState("var(--dark-primary)");
+  const [lightTheme, setLightTheme] = useState("var(--light-primary)");
   const [totalPomodorosCompleted, setTotalPomodorosCompleted] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleMinutesToSeconds = (minutes: number): number => minutes * 60;
+  const convertMinutesToSeconds = (minutes: number): number => minutes * 60;
 
   const getCurrentDateString = () => {
     const currentDay = new Date();
@@ -185,7 +186,8 @@ export const PomodoroContextProvider = ({
 
       function toggleThemeStart() {
         setTheme("var(--primary)");
-        setThemeShadow("var(--dark-primary)");
+        setDarkTheme("var(--dark-primary)");
+        setLightTheme("var(--light-primary)");
       }
     }
 
@@ -197,7 +199,8 @@ export const PomodoroContextProvider = ({
 
       function toggleThemeStudy() {
         setTheme("var(--yellow)");
-        setThemeShadow("var(--dark-yellow)");
+        setDarkTheme("var(--dark-yellow)");
+        setLightTheme("var(--light-yellow)");
       }
     }
 
@@ -216,7 +219,8 @@ export const PomodoroContextProvider = ({
 
       function toggleThemeShortBreak() {
         setTheme("var(--blue)");
-        setThemeShadow("var(--dark-blue)");
+        setDarkTheme("var(--dark-blue)");
+        setLightTheme("var(--light-blue)");
       }
     }
 
@@ -232,29 +236,38 @@ export const PomodoroContextProvider = ({
       }
 
       function toggleThemeLongBreak() {
-        setTheme("var(--light-blue)");
-        setThemeShadow("var(--dark-light-blue)");
+        setTheme("var(--blue1)");
+        setDarkTheme("var(--light-blue1)");
+        setLightTheme("var(--light-blue1)");
       }
     }
   };
 
+  const pomodoroContextResponse = {
+    isStart,
+    isStudy,
+    isShortBreak,
+    isLongBreak,
+    isLoading,
+    totalPomodorosCompleted,
+    theme,
+    darkTheme,
+    lightTheme,
+    status,
+    saveStudyProgressInFirebase,
+    saveShortBreakProgressInFirebase,
+    saveLongBreakProgressInFirebase,
+    handleChangeStatus,
+    convertMinutesToSeconds,
+  };
+
+  const useTimerResponse = useTimer(pomodoroContextResponse);
+
   return (
     <PomodoroContext.Provider
       value={{
-        isStart,
-        isStudy,
-        isShortBreak,
-        isLongBreak,
-        isLoading,
-        totalPomodorosCompleted,
-        theme,
-        themeShadow,
-        status,
-        saveStudyProgressInFirebase,
-        saveShortBreakProgressInFirebase,
-        saveLongBreakProgressInFirebase,
-        handleChangeStatus,
-        handleMinutesToSeconds,
+        ...pomodoroContextResponse,
+        ...useTimerResponse,
       }}
     >
       {children}

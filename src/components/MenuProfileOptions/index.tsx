@@ -1,14 +1,14 @@
-import { useHistory } from "react-router-dom";
 import { FiHelpCircle, FiLogOut, FiPieChart } from "react-icons/fi";
 import { MdOutlineLeaderboard } from "react-icons/md";
-
-import styles from "./styles.module.scss";
-import Toast from "../Toast";
-
+import { useHistory } from "react-router-dom";
 import { useAuth } from "../../contexts/authContext";
+import { usePomodoro } from "../../contexts/pomodoroContext";
+import Toast from "../Toast";
+import styles from "./styles.module.scss";
 
 export const MenuProfileOptions = () => {
   const { signOut, username } = useAuth();
+  const { status, theme, darkTheme, lightTheme } = usePomodoro();
   const history = useHistory();
 
   const pageOptions = [
@@ -51,6 +51,15 @@ export const MenuProfileOptions = () => {
     return Boolean(history.location.pathname === page);
   };
 
+  const getThemeColor = (): string => {
+    switch(status) {
+      case "start": return "Primary";
+      case "study": return "Yellow";
+      case "short-break": return "Blue";
+      case "long-break": return "Blue1";
+    }
+  }
+
   return (
     <div className={styles.container}>
       <h2 style={{ marginBottom: 20 }}>Welcome, {username}!</h2>
@@ -62,8 +71,8 @@ export const MenuProfileOptions = () => {
             isSignOut
               ? styles.divExit
               : is(route)
-              ? styles.activePageOption
-              : styles.pageOption
+              ? styles["activePageOption" + getThemeColor()]
+              : styles["pageOption" + getThemeColor()]
           }
           onClick={() => (isSignOut ? handleSignOut() : history.push(route))}
         >

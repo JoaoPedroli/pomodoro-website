@@ -20,12 +20,10 @@ export const Dashboard = () => {
   const [allLongBreakTime, setAllLongBreakTime] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
-  const resetThemeAndProcess = () => handleChangeStatus("start");
   const getUid = () => JSON.parse(localStorage.getItem("UserData")).uid;
   const getPlural = (value: number) => (value === 1 ? "" : "s");
 
   useEffect(() => {
-    resetThemeAndProcess();
     fetchData();
 
     async function fetchData() {
