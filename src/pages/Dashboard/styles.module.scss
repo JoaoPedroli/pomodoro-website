@@ -52,7 +52,9 @@
           }
 
           &:last-child {
-            text-shadow: .5px .5px 2px gray;
+            text-shadow: 1px 1px 7px #c9c9c9;
+            color: var(--white);
+            font-weight: 700;
           }
         }
       }

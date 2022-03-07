@@ -135,29 +135,29 @@ export const Dashboard = () => {
           <div className={styles.statisticsContainer}>
             <div
               className={styles.containerAllTime}
-              style={{ borderRadius: "10px 0 0 10px" }}
+              style={{ borderRadius: "10px 0 0 10px", background: "linear-gradient(var(--yellow), var(--dark-yellow))" }}
             >
               <span>Total Study Time</span>
-              <span style={{ color: "var(--yellow)" }}>
-                {allStudyTime} Minute{getPlural(allStudyTime)}
+              <span>
+                {allStudyTime} Minute{getPlural(allStudyTime)} {allStudyTime > 25 && "👏👏👏"}
               </span>
             </div>
             <div className="div-column">
               <div
                 className={styles.containerAllTime}
-                style={{ borderRadius: "0 10px 0 0" }}
+                style={{ borderRadius: "0 10px 0 0", background: "linear-gradient(var(--blue), var(--dark-blue))" }}
               >
                 <span>Total Short Break Time</span>
-                <span style={{ color: "var(--light-blue)" }}>
+                <span>
                   {allShortBreakTime} Minute{getPlural(allShortBreakTime)}
                 </span>
               </div>
               <div
                 className={styles.containerAllTime}
-                style={{ borderRadius: "0 0 10px 0" }}
+                style={{ borderRadius: "0 0 10px 0", background: "linear-gradient(var(--blue1), var(--dark-blue1))" }}
               >
                 <span>Total Long Break Time</span>
-                <span style={{ color: "var(--blue)" }}>
+                <span>
                   {allLongBreakTime} Minute{getPlural(allLongBreakTime)}
                 </span>
               </div>
