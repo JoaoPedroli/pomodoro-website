@@ -1,4 +1,4 @@
-import { FiHelpCircle, FiLogOut, FiPieChart } from "react-icons/fi";
+import { FiHelpCircle, FiLogOut, FiPieChart, FiSettings } from "react-icons/fi";
 import { MdOutlineLeaderboard } from "react-icons/md";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../../contexts/authContext";
@@ -21,6 +21,11 @@ export const MenuProfileOptions = () => {
       name: "Rank",
       icon: <MdOutlineLeaderboard />,
       route: "/leaderboard",
+    },
+    {
+      name: "Settings",
+      icon: <FiSettings />,
+      route: "/settings",
     },
     {
       name: "Suport",

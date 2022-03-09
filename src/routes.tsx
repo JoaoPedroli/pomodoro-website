@@ -6,6 +6,7 @@ import { Dashboard } from "./pages/Dashboard";
 import { Home } from "./pages/Home";
 import { Login__Register } from "./pages/Login__Register";
 import { NotFoundError as Error } from "./pages/NotFoundError";
+import { Settings } from './pages/Settings';
 import styles from "./styles/app.module.scss";
 
 export const Routes = () => {
@@ -52,6 +53,7 @@ export const Routes = () => {
           component={Login__Register}
         />
         <AuthenticatedRoute exact path="/dashboard" component={Dashboard} />
+        <AuthenticatedRoute exact path="/settings" component={Settings} />
         <Route path="*" component={Error} />
       </Switch>
     </div>
