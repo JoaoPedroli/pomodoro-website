@@ -38,19 +38,19 @@
   }
 
 
-  .pageOptionPrimary {
+  .page-option-primary {
     @include usePageOptionStyles(var(--primary));
   }
 
-  .pageOptionYellow {
+  .page-option-yellow {
     @include usePageOptionStyles(var(--dark-yellow));
   }
 
-  .pageOptionBlue {
+  .page-option-blue {
     @include usePageOptionStyles(var(--blue));
   }
 
-  .pageOptionBlue1 {
+  .page-option-blue1 {
     @include usePageOptionStyles(var(--dark-blue1)); 
   }
 
@@ -60,19 +60,19 @@
     color: $theme;
   }
 
-  .activePageOptionPrimary {
+  .active-page-option-primary {
     @include useActivePageOptionStyles(var(--primary), var(--light-primary));
   }
 
-  .activePageOptionYellow {
+  .active-page-option-yellow {
     @include useActivePageOptionStyles(var(--dark-yellow), var(--light-yellow));
   }
 
-  .activePageOptionBlue {
+  .active-page-option-blue {
     @include useActivePageOptionStyles(var(--blue), var(--light-blue));
   }
 
-  .activePageOptionBlue1 {
+  .active-page-option-blue1 {
     @include useActivePageOptionStyles(var(--dark-blue1), var(--light-blue1)); 
   }
 

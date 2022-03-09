@@ -7,35 +7,27 @@
 }
 
 .form {
-  background: var(--white);
-  border-radius: var(--default-border-radius);
-  padding: 30px;
-
   display: flex;
+  text-align: left;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
+  label {
+    width: 100%;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
   input, button {
+    width: 100%;
     font-size: 23px;
-    border-radius: var(--default-border-radius);
   }
   
   button {
-    margin-top: 10px;
-    border: none;
-    background: var(--primary);
+    margin-top: 1.5rem;
+    padding: 10px 0 !important;
   }
 }
-
-.divGroup {
-  margin: 10px 0;
-
-  display: flex;
-  flex-direction: column;
-
-  :first-child {
-    margin: 0;
-  }
-}
-

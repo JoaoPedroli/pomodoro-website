@@ -4,7 +4,7 @@ import { usePomodoro } from "../../contexts/pomodoroContext";
 import styles from "./styles.module.scss";
 
 export const Loader = ({ size = "60", color = "" }) => {
-  const { theme } = usePomodoro();
+  const { useTheme } = usePomodoro();
 
   const { containerProps, indicatorEl } = useLoading({
     loading: true,
@@ -12,7 +12,7 @@ export const Loader = ({ size = "60", color = "" }) => {
   });
 
   return (
-    <section {...containerProps} className={styles.container} style={{color: theme}}>
+    <section {...containerProps} className={styles.container} style={{color:useTheme}}>
       {indicatorEl}
     </section>
   );

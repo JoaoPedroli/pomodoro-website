@@ -24,20 +24,20 @@
 
   button {
     margin: 0 3px;
-  }
-}
+    box-shadow: none;
+    font-size: 1.3rem;
 
-#login,
-#signup {
-  padding: 5px;
-  border-radius: var(--default-border-radius);
-  font-size: 25px;
+    &:hover {
+      box-shadow: none;
+      transform: none;
+    }
+  }
 }
 
 #login {
   background: none;
   border: 0.5px solid var(--white);
-
+  
   &:hover {
     background: var(--white);
   }
@@ -46,4 +46,7 @@
 #signup {
   background: var(--white);
   margin-left: 15px;
+  &:hover {
+    opacity: .9;
+  }
 }

@@ -8,7 +8,7 @@ import styles from "./styles.module.scss";
 
 export const MenuProfileOptions = () => {
   const { signOut, username } = useAuth();
-  const { status, theme, darkTheme, lightTheme } = usePomodoro();
+  const { theme } = usePomodoro();
   const history = useHistory();
 
   const pageOptions = [
@@ -56,15 +56,6 @@ export const MenuProfileOptions = () => {
     return Boolean(history.location.pathname === page);
   };
 
-  const getThemeColor = (): string => {
-    switch(status) {
-      case "start": return "Primary";
-      case "study": return "Yellow";
-      case "short-break": return "Blue";
-      case "long-break": return "Blue1";
-    }
-  }
-
   return (
     <div className={styles.container}>
       <h2 style={{ marginBottom: 20 }}>Welcome, {username}!</h2>
@@ -76,8 +67,8 @@ export const MenuProfileOptions = () => {
             isSignOut
               ? styles.divExit
               : is(route)
-              ? styles["activePageOption" + getThemeColor()]
-              : styles["pageOption" + getThemeColor()]
+              ? styles[`active-page-option-${theme}`]
+              : styles[`page-option-${theme}`]
           }
           onClick={() => (isSignOut ? handleSignOut() : history.push(route))}
         >

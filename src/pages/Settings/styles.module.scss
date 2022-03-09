@@ -1,4 +1,29 @@
-.container {
+@mixin useFlex() {
   display: flex;
-  flex-direction: column;
+  width: 100%;
+}
+
+.container {
+  @include useFlex();
+}
+
+.subcontainer {
+  @include useFlex();
+  justify-content: center;
+
+  form {
+    margin-top: 3rem;
+    @include useFlex();
+    flex-direction: column;
+    width: var(--default-width);
+    max-width: var(--default-max-width);
+
+    button, input {
+      font-size: 1.3rem;
+    }
+
+    button {
+      margin-top: 1.3rem;
+    }
+  }
 }

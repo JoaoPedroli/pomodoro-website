@@ -1,33 +1,17 @@
 import { useState } from "react";
-import { useHistory } from "react-router-dom";
 import { FiUser } from "react-icons/fi";
-
-import styles from "./styles.module.scss";
-
+import { useHistory } from "react-router-dom";
 import { useAuth } from "../../contexts/authContext";
 import { usePomodoro } from "../../contexts/pomodoroContext";
+import styles from "./styles.module.scss";
 
 export const Header = () => {
   const { isSigned } = useAuth();
-  const { theme, isStart } = usePomodoro();
+  const { useTheme, isStart } = usePomodoro();
   const history = useHistory();
   const [isHover, setIsHover] = useState(false);
 
   const toggleHover = () => setIsHover(!isHover);
-
-  const handleVerifAndConfirmRedirect = (optionAuth?: string): boolean => {
-    if (isStart) return true;
-
-    const confirm = window.confirm(
-      `Do you really want to ${
-        isSigned
-          ? "see your profile"
-          : `${optionAuth === "signin" ? "login" : "register"}`
-      } now? You will lose all current process.`
-    );
-
-    return Boolean(confirm);
-  };
 
   const handleRedirectToDashboard = () => {
     history.push("/dashboard");
@@ -41,7 +25,7 @@ export const Header = () => {
     <div
       className={styles.container}
       style={{
-        background: theme,
+        background: useTheme,
       }}
     >
       <span
@@ -56,24 +40,26 @@ export const Header = () => {
         <FiUser
           id="pointer"
           className={styles.userIcon}
-          style={{ color: theme }}
+          style={{ color: useTheme }}
           onClick={() => handleRedirectToDashboard()}
         />
       ) : (
         <div className={styles.auth}>
           <button
+            className="primary-button"
             id={styles.login}
             onMouseEnter={toggleHover}
             onMouseLeave={toggleHover}
             onClick={() => handleRedirectToSign("signin")}
-            style={isHover ? { color: theme } : { color: "var(--white)" }}
+            style={isHover ? { color: useTheme } : { color: "var(--white)" }}
           >
             Login
           </button>
 
           <button
+            className="primary-button"
             id={styles.signup}
-            style={{ color: theme, transition: "all 1s" }}
+            style={{ color: useTheme }}
             onClick={() => handleRedirectToSign("signup")}
           >
             Sign Up

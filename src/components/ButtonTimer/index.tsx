@@ -13,12 +13,12 @@ export const ButtonTimer = ({
   handlePause,
   handleResume,
 }: ButtonTimerTypes) => {
-  const { status, isStart } = usePomodoro();
+  const { theme, isStart } = usePomodoro();
 
   return isStart ? (
     <button
       style={{ width: "100%" }}
-      className="default-button"
+      className="primary-button"
       onClick={handleStart}
     >
       Start
@@ -26,15 +26,7 @@ export const ButtonTimer = ({
   ) : (
     <button
       style={{ width: "100%" }}
-      className={
-        status === "start"
-          ? "default-button"
-          : status === "study"
-          ? "yellow-button"
-          : status === "short-break"
-          ? "blue-button"
-          : "blue1-button"
-      }
+      className={`${theme}-button`}
       onClick={isPaused ? handlePause : handleResume}
     >
       {isPaused ? "Pause" : "Resume"}

@@ -14,9 +14,10 @@ export interface PomodoroContextProps extends UseTimerProps {
   isLoading: boolean;
   totalPomodorosCompleted: number;
   theme: string;
-  darkTheme: string;
-  lightTheme: string,
   status: StatusContext;
+  useTheme: string;
+  useDarkTheme: string;
+  useLightTheme: string;
   saveStudyProgressInFirebase: () => Promise<any>;
   saveShortBreakProgressInFirebase: () => Promise<any>;
   saveLongBreakProgressInFirebase: () => Promise<any>;
@@ -41,9 +42,7 @@ export const PomodoroContextProvider = ({
   const [isStudy, setIsStudy] = useState(false);
   const [isShortBreak, setIsShortBreak] = useState(false);
   const [isLongBreak, setIsLongBreak] = useState(false);
-  const [theme, setTheme] = useState("var(--primary)");
-  const [darkTheme, setDarkTheme] = useState("var(--dark-primary)");
-  const [lightTheme, setLightTheme] = useState("var(--light-primary)");
+  const [theme, setTheme] = useState("primary");
   const [totalPomodorosCompleted, setTotalPomodorosCompleted] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -97,39 +96,6 @@ export const PomodoroContextProvider = ({
     }
   };
 
-  const handleAddStudyTime = async (): Promise<{ error?: {} }> => {
-    const location = {
-      collection: "study-time-days",
-      doc: getCurrentDateString(),
-    };
-
-    const increment = 25;
-
-    return await getAndIncreaseDuration(location, increment);
-  };
-
-  const handleAddShortBreakTime = async (): Promise<{ error?: {} }> => {
-    const location = {
-      collection: "short-break-time-days",
-      doc: getCurrentDateString(),
-    };
-
-    const increment = 5;
-
-    return await getAndIncreaseDuration(location, increment);
-  };
-
-  const handleAddLongBreakTime = async (): Promise<{ error?: {} }> => {
-    const location = {
-      collection: "long-break-time-days",
-      doc: getCurrentDateString(),
-    };
-
-    const increment = 15;
-
-    return await getAndIncreaseDuration(location, increment);
-  };
-
   async function saveStudyProgressInFirebase() {
     if (!isSigned) {
       Toast.info(
@@ -146,6 +112,17 @@ export const PomodoroContextProvider = ({
       Toast.success(
         "Congratulations you finished 25 minutes of study, they were added to your history today, check the dashboard later. Time to relax ^^"
       );
+
+    async function handleAddStudyTime(): Promise<{ error?: {} }> {
+      const location = {
+        collection: "study-time-days",
+        doc: getCurrentDateString(),
+      };
+
+      const increment = 25;
+
+      return await getAndIncreaseDuration(location, increment);
+    }
   }
 
   async function saveShortBreakProgressInFirebase() {
@@ -156,6 +133,17 @@ export const PomodoroContextProvider = ({
       Toast.error();
       console.log(error);
     }
+
+    async function handleAddShortBreakTime(): Promise<{ error?: {} }> {
+      const location = {
+        collection: "short-break-time-days",
+        doc: getCurrentDateString(),
+      };
+
+      const increment = 5;
+
+      return await getAndIncreaseDuration(location, increment);
+    }
   }
 
   async function saveLongBreakProgressInFirebase() {
@@ -165,6 +153,17 @@ export const PomodoroContextProvider = ({
     if (error) {
       Toast.error();
       console.log(error);
+    }
+
+    async function handleAddLongBreakTime(): Promise<{ error?: {} }> {
+      const location = {
+        collection: "long-break-time-days",
+        doc: getCurrentDateString(),
+      };
+
+      const increment = 15;
+
+      return await getAndIncreaseDuration(location, increment);
     }
   }
 
@@ -185,9 +184,7 @@ export const PomodoroContextProvider = ({
       toggleThemeStart();
 
       function toggleThemeStart() {
-        setTheme("var(--primary)");
-        setDarkTheme("var(--dark-primary)");
-        setLightTheme("var(--light-primary)");
+        setTheme("primary");
       }
     }
 
@@ -198,9 +195,7 @@ export const PomodoroContextProvider = ({
       toggleThemeStudy();
 
       function toggleThemeStudy() {
-        setTheme("var(--yellow)");
-        setDarkTheme("var(--dark-yellow)");
-        setLightTheme("var(--light-yellow)");
+        setTheme("yellow");
       }
     }
 
@@ -218,9 +213,7 @@ export const PomodoroContextProvider = ({
       }
 
       function toggleThemeShortBreak() {
-        setTheme("var(--blue)");
-        setDarkTheme("var(--dark-blue)");
-        setLightTheme("var(--light-blue)");
+        setTheme("blue");
       }
     }
 
@@ -236,12 +229,14 @@ export const PomodoroContextProvider = ({
       }
 
       function toggleThemeLongBreak() {
-        setTheme("var(--blue1)");
-        setDarkTheme("var(--light-blue1)");
-        setLightTheme("var(--light-blue1)");
+        setTheme("blue1");
       }
     }
   };
+
+  const useTheme = `var(--${theme})`;
+  const useDarkTheme = `var(--dark-${theme})`;
+  const useLightTheme = `var(--light-${theme})`;
 
   const pomodoroContextResponse = {
     isStart,
@@ -251,9 +246,10 @@ export const PomodoroContextProvider = ({
     isLoading,
     totalPomodorosCompleted,
     theme,
-    darkTheme,
-    lightTheme,
     status,
+    useTheme,
+    useDarkTheme,
+    useLightTheme,
     saveStudyProgressInFirebase,
     saveShortBreakProgressInFirebase,
     saveLongBreakProgressInFirebase,
