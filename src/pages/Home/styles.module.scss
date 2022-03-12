@@ -18,10 +18,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  h2 {
-    font-weight: normal;
-  }
+  text-align: center;
 
   #progressTimer {
     width: 434px;
@@ -38,6 +35,7 @@
   #time {
     font-size: 55px;
     margin: 38px 0;
+    font-weight: bold;
   }
 
   #closebutton {

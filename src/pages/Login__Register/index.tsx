@@ -50,6 +50,7 @@ export const Login__Register = (props: { location: { search: string } }) => {
           <Loader />
         ) : (
           <>
+            <h1>{optionAuth === "signup" ? "Register" : "Login"}</h1>
             {optionAuth === "signup" && (
               <>
                 <FormLabel>Username</FormLabel>

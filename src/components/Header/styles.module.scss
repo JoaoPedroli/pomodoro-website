@@ -36,6 +36,7 @@
 
 #login-txt {
   background: none;
+  font-weight: bold;
   border: 0.5px solid var(--white);
   
   &:hover {
@@ -46,6 +47,7 @@
 #signup-txt {
   background: var(--white);
   margin-left: 15px;
+  font-weight: bold;
   &:hover {
     opacity: .9;
   }
