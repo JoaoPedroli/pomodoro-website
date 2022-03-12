@@ -47,7 +47,7 @@ export const Header = () => {
         <div className={styles.auth}>
           <button
             className="primary-button"
-            id={styles.login}
+            id={styles["login-txt"]}
             onMouseEnter={toggleHover}
             onMouseLeave={toggleHover}
             onClick={() => handleRedirectToSign("signin")}
@@ -58,7 +58,7 @@ export const Header = () => {
 
           <button
             className="primary-button"
-            id={styles.signup}
+            id={styles["signup-txt"]}
             style={{ color: useTheme }}
             onClick={() => handleRedirectToSign("signup")}
           >
