@@ -6,56 +6,71 @@ import { Dashboard } from "./pages/Dashboard";
 import { Home } from "./pages/Home";
 import { Login__Register } from "./pages/Login__Register";
 import { NotFoundError as Error } from "./pages/NotFoundError";
-import { Settings } from './pages/Settings';
+import { Settings } from "./pages/Settings";
 import styles from "./styles/app.module.scss";
 
 export const Routes = () => {
-  const { isSigned, isLoading } = useAuth();
+	const { isSigned, isLoading } = useAuth();
 
-  const AuthenticatedRoute = ({ component: Component, ...rest }) => (
-    <Route
-      {...rest}
-      render={(props) =>
-        isSigned ? (
-          <Component {...props} />
-        ) : (
-          <Redirect to={{ pathname: "*", state: { from: props.location } }} />
-        )
-      }
-    />
-  );
+	const AuthenticatedRoute = ({ component: Component, ...rest }) => (
+		<Route
+			{...rest}
+			render={props =>
+				isSigned ? (
+					<Component {...props} />
+				) : (
+					<Redirect
+						to={{ pathname: "*", state: { from: props.location } }}
+					/>
+				)
+			}
+		/>
+	);
 
-  const NoAuthenticatedRoute = ({ component: Component, ...rest }) => (
-    <Route
-      {...rest}
-      render={(props) =>
-        !isSigned ? (
-          <Component {...props} />
-        ) : (
-          <Redirect to={{ pathname: "/dashboard", state: { from: props.location } }} />
-        )
-      }
-    />
-  );
+	const NoAuthenticatedRoute = ({ component: Component, ...rest }) => (
+		<Route
+			{...rest}
+			render={props =>
+				!isSigned ? (
+					<Component {...props} />
+				) : (
+					<Redirect
+						to={{
+							pathname: "/dashboard",
+							state: { from: props.location },
+						}}
+					/>
+				)
+			}
+		/>
+	);
 
-  if (isLoading) {
-    return <Loader />;
-  }
+	if (isLoading) {
+		return <Loader />;
+	}
 
-  return (
-    <div className={styles.container}>
-      <Header />
-      <Switch>
-        <Route exact path="/" component={Home} />
-        <NoAuthenticatedRoute
-          exact
-          path="/welcome"
-          component={Login__Register}
-        />
-        <AuthenticatedRoute exact path="/dashboard" component={Dashboard} />
-        <AuthenticatedRoute exact path="/settings" component={Settings} />
-        <Route path="*" component={Error} />
-      </Switch>
-    </div>
-  );
+	return (
+		<div className={styles.container}>
+			<Header />
+			<Switch>
+				<Route exact path="/" component={Home} />
+				<NoAuthenticatedRoute
+					exact
+					path="/welcome"
+					component={Login__Register}
+				/>
+				<AuthenticatedRoute
+					exact
+					path="/dashboard"
+					component={Dashboard}
+				/>
+				<AuthenticatedRoute
+					exact
+					path="/settings"
+					component={Settings}
+				/>
+				<Route path="*" component={Error} />
+			</Switch>
+		</div>
+	);
 };

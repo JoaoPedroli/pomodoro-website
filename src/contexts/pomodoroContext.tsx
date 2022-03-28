@@ -7,270 +7,272 @@ import { useAuth } from "./authContext";
 export type StatusContext = "start" | "study" | "short-break" | "long-break";
 
 export interface PomodoroContextProps extends UseTimerProps {
-  isStart: boolean;
-  isStudy: boolean;
-  isShortBreak: boolean;
-  isLongBreak: boolean;
-  isLoading: boolean;
-  totalPomodorosCompleted: number;
-  theme: string;
-  status: StatusContext;
-  useTheme: string;
-  useDarkTheme: string;
-  useLightTheme: string;
-  saveStudyProgressInFirebase: () => Promise<any>;
-  saveShortBreakProgressInFirebase: () => Promise<any>;
-  saveLongBreakProgressInFirebase: () => Promise<any>;
-  handleChangeStatus: (status: string) => any;
-  convertMinutesToSeconds: (minutes: number) => number;
+	isStart: boolean;
+	isStudy: boolean;
+	isShortBreak: boolean;
+	isLongBreak: boolean;
+	isLoading: boolean;
+	totalPomodorosCompleted: number;
+	theme: string;
+	status: StatusContext;
+	useTheme: string;
+	useDarkTheme: string;
+	useLightTheme: string;
+	saveStudyProgressInFirebase: () => Promise<any>;
+	saveShortBreakProgressInFirebase: () => Promise<any>;
+	saveLongBreakProgressInFirebase: () => Promise<any>;
+	handleChangeStatus: (status: string) => any;
+	convertMinutesToSeconds: (minutes: number) => number;
 }
 
 type PomodoroContextProviderProps = {
-  children: ReactNode;
+	children: ReactNode;
 };
 
 export const PomodoroContext = createContext<PomodoroContextProps | null>(null);
 
 export const PomodoroContextProvider = ({
-  children,
+	children,
 }: PomodoroContextProviderProps) => {
-  const { isSigned, userData } = useAuth();
-  const uid = userData?.uid;
+	const { isSigned, userData } = useAuth();
+	const uid = userData?.uid;
 
-  const [status, setStatus] = useState<StatusContext>("start");
-  const [isStart, setIsStart] = useState(true);
-  const [isStudy, setIsStudy] = useState(false);
-  const [isShortBreak, setIsShortBreak] = useState(false);
-  const [isLongBreak, setIsLongBreak] = useState(false);
-  const [theme, setTheme] = useState("primary");
-  const [totalPomodorosCompleted, setTotalPomodorosCompleted] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
+	const [status, setStatus] = useState<StatusContext>("start");
+	const [isStart, setIsStart] = useState(true);
+	const [isStudy, setIsStudy] = useState(false);
+	const [isShortBreak, setIsShortBreak] = useState(false);
+	const [isLongBreak, setIsLongBreak] = useState(false);
+	const [theme, setTheme] = useState("primary");
+	const [totalPomodorosCompleted, setTotalPomodorosCompleted] = useState(0);
+	const [isLoading, setIsLoading] = useState(false);
 
-  const convertMinutesToSeconds = (minutes: number): number => minutes * 60;
+	const convertMinutesToSeconds = (minutes: number): number => minutes * 60;
 
-  const getCurrentDateString = () => {
-    const currentDay = new Date();
-    currentDay.setHours(0), currentDay.setMinutes(0), currentDay.setSeconds(0);
-    return `${currentDay}`;
-  };
+	const getCurrentDateString = () => {
+		const currentDay = new Date();
+		currentDay.setHours(0),
+			currentDay.setMinutes(0),
+			currentDay.setSeconds(0);
+		return `${currentDay}`;
+	};
 
-  const getAndIncreaseDuration = async (
-    location: {
-      collection: string;
-      doc: string;
-    },
-    increment: number
-  ): Promise<{ error?: {} }> => {
-    const { collection, doc } = location;
-    return await handleIncrease();
+	const getAndIncreaseDuration = async (
+		location: {
+			collection: string;
+			doc: string;
+		},
+		increment: number
+	): Promise<{ error?: {} }> => {
+		const { collection, doc } = location;
+		return await handleIncrease();
 
-    async function getDuration() {
-      return await firebase
-        .firestore()
-        .collection("users")
-        .doc(uid)
-        .collection(collection)
-        .doc(doc)
-        .get()
-        .then((doc) => doc.data()?.duration ?? 0);
-    }
+		async function getDuration() {
+			return await firebase
+				.firestore()
+				.collection("users")
+				.doc(uid)
+				.collection(collection)
+				.doc(doc)
+				.get()
+				.then(doc => doc.data()?.duration ?? 0);
+		}
 
-    async function handleIncrease(): Promise<{ error?: {} }> {
-      let duration = await getDuration();
+		async function handleIncrease(): Promise<{ error?: {} }> {
+			let duration = await getDuration();
 
-      return await firebase
-        .firestore()
-        .collection("users")
-        .doc(uid)
-        .collection(collection)
-        .doc(doc)
-        .set({
-          duration: duration + increment,
-        })
-        .then(() => {
-          return {};
-        })
-        .catch((error) => {
-          return { error };
-        });
-    }
-  };
+			return await firebase
+				.firestore()
+				.collection("users")
+				.doc(uid)
+				.collection(collection)
+				.doc(doc)
+				.set({
+					duration: duration + increment,
+				})
+				.then(() => {
+					return {};
+				})
+				.catch(error => {
+					return { error };
+				});
+		}
+	};
 
-  async function saveStudyProgressInFirebase() {
-    if (!isSigned) {
-      Toast.info(
-        "Save your progress! Register and get access to your statistics"
-      );
-      return;
-    }
+	async function saveStudyProgressInFirebase() {
+		if (!isSigned) {
+			Toast.info(
+				"Save your progress! Register and get access to your statistics"
+			);
+			return;
+		}
 
-    const { error } = await handleAddStudyTime();
-    if (error) {
-      Toast.error();
-      console.log(error ?? "");
-    } else
-      Toast.success(
-        "Congratulations you finished 25 minutes of study, they were added to your history today, check the dashboard later. Time to relax ^^"
-      );
+		const { error } = await handleAddStudyTime();
+		if (error) {
+			Toast.error();
+			console.log(error ?? "");
+		} else
+			Toast.success(
+				"Congratulations you finished 25 minutes of study, they were added to your history today, check the dashboard later. Time to relax ^^"
+			);
 
-    async function handleAddStudyTime(): Promise<{ error?: {} }> {
-      const location = {
-        collection: "study-time-days",
-        doc: getCurrentDateString(),
-      };
+		async function handleAddStudyTime(): Promise<{ error?: {} }> {
+			const location = {
+				collection: "study-time-days",
+				doc: getCurrentDateString(),
+			};
 
-      const increment = 25;
+			const increment = 25;
 
-      return await getAndIncreaseDuration(location, increment);
-    }
-  }
+			return await getAndIncreaseDuration(location, increment);
+		}
+	}
 
-  async function saveShortBreakProgressInFirebase() {
-    if (!isSigned) return;
+	async function saveShortBreakProgressInFirebase() {
+		if (!isSigned) return;
 
-    const error = (await handleAddShortBreakTime()).error;
-    if (error) {
-      Toast.error();
-      console.log(error);
-    }
+		const error = (await handleAddShortBreakTime()).error;
+		if (error) {
+			Toast.error();
+			console.log(error);
+		}
 
-    async function handleAddShortBreakTime(): Promise<{ error?: {} }> {
-      const location = {
-        collection: "short-break-time-days",
-        doc: getCurrentDateString(),
-      };
+		async function handleAddShortBreakTime(): Promise<{ error?: {} }> {
+			const location = {
+				collection: "short-break-time-days",
+				doc: getCurrentDateString(),
+			};
 
-      const increment = 5;
+			const increment = 5;
 
-      return await getAndIncreaseDuration(location, increment);
-    }
-  }
+			return await getAndIncreaseDuration(location, increment);
+		}
+	}
 
-  async function saveLongBreakProgressInFirebase() {
-    if (!isSigned) return;
+	async function saveLongBreakProgressInFirebase() {
+		if (!isSigned) return;
 
-    const error = (await handleAddLongBreakTime()).error;
-    if (error) {
-      Toast.error();
-      console.log(error);
-    }
+		const error = (await handleAddLongBreakTime()).error;
+		if (error) {
+			Toast.error();
+			console.log(error);
+		}
 
-    async function handleAddLongBreakTime(): Promise<{ error?: {} }> {
-      const location = {
-        collection: "long-break-time-days",
-        doc: getCurrentDateString(),
-      };
+		async function handleAddLongBreakTime(): Promise<{ error?: {} }> {
+			const location = {
+				collection: "long-break-time-days",
+				doc: getCurrentDateString(),
+			};
 
-      const increment = 15;
+			const increment = 15;
 
-      return await getAndIncreaseDuration(location, increment);
-    }
-  }
+			return await getAndIncreaseDuration(location, increment);
+		}
+	}
 
-  const handleChangeStatus = async (newStatus: StatusContext) => {
-    setIsLoading(true);
-    handleChangeIsStart(Boolean(newStatus === "start"));
-    await handleChangeIsStudy(Boolean(newStatus === "study"));
-    await handleChangeIsShortBreak(Boolean(newStatus === "short-break"));
-    await handleChangeIsLongBreak(Boolean(newStatus === "long-break"));
-    setStatus(newStatus);
-    setIsLoading(false);
+	const handleChangeStatus = async (newStatus: StatusContext) => {
+		setIsLoading(true);
+		handleChangeIsStart(Boolean(newStatus === "start"));
+		await handleChangeIsStudy(Boolean(newStatus === "study"));
+		await handleChangeIsShortBreak(Boolean(newStatus === "short-break"));
+		await handleChangeIsLongBreak(Boolean(newStatus === "long-break"));
+		setStatus(newStatus);
+		setIsLoading(false);
 
-    function handleChangeIsStart(newIsStart: boolean) {
-      setIsStart(newIsStart);
-      if (!newIsStart) return;
+		function handleChangeIsStart(newIsStart: boolean) {
+			setIsStart(newIsStart);
+			if (!newIsStart) return;
 
-      setTotalPomodorosCompleted(0);
-      toggleThemeStart();
+			setTotalPomodorosCompleted(0);
+			toggleThemeStart();
 
-      function toggleThemeStart() {
-        setTheme("primary");
-      }
-    }
+			function toggleThemeStart() {
+				setTheme("primary");
+			}
+		}
 
-    async function handleChangeIsStudy(newIsStudy: boolean) {
-      setIsStudy(newIsStudy);
-      if (!newIsStudy) return;
+		async function handleChangeIsStudy(newIsStudy: boolean) {
+			setIsStudy(newIsStudy);
+			if (!newIsStudy) return;
 
-      toggleThemeStudy();
+			toggleThemeStudy();
 
-      function toggleThemeStudy() {
-        setTheme("yellow");
-      }
-    }
+			function toggleThemeStudy() {
+				setTheme("yellow");
+			}
+		}
 
-    async function handleChangeIsShortBreak(newIsShortBreak: boolean) {
-      setIsShortBreak(newIsShortBreak);
-      if (!newIsShortBreak) return;
+		async function handleChangeIsShortBreak(newIsShortBreak: boolean) {
+			setIsShortBreak(newIsShortBreak);
+			if (!newIsShortBreak) return;
 
-      handleAddOnePomodoro();
-      toggleThemeShortBreak();
+			handleAddOnePomodoro();
+			toggleThemeShortBreak();
 
-      function handleAddOnePomodoro() {
-        const isStartValue = Boolean(totalPomodorosCompleted === 0);
-        const increment = isStartValue ? 2 : 1;
-        setTotalPomodorosCompleted(totalPomodorosCompleted + increment);
-      }
+			function handleAddOnePomodoro() {
+				const isStartValue = Boolean(totalPomodorosCompleted === 0);
+				const increment = isStartValue ? 2 : 1;
+				setTotalPomodorosCompleted(totalPomodorosCompleted + increment);
+			}
 
-      function toggleThemeShortBreak() {
-        setTheme("blue");
-      }
-    }
+			function toggleThemeShortBreak() {
+				setTheme("blue");
+			}
+		}
 
-    async function handleChangeIsLongBreak(newIsLongBreak: boolean) {
-      setIsLongBreak(newIsLongBreak);
-      if (!newIsLongBreak) return;
+		async function handleChangeIsLongBreak(newIsLongBreak: boolean) {
+			setIsLongBreak(newIsLongBreak);
+			if (!newIsLongBreak) return;
 
-      handleRestartTotalPomodoro();
-      toggleThemeLongBreak();
+			handleRestartTotalPomodoro();
+			toggleThemeLongBreak();
 
-      function handleRestartTotalPomodoro() {
-        setTotalPomodorosCompleted(0);
-      }
+			function handleRestartTotalPomodoro() {
+				setTotalPomodorosCompleted(0);
+			}
 
-      function toggleThemeLongBreak() {
-        setTheme("blue1");
-      }
-    }
-  };
+			function toggleThemeLongBreak() {
+				setTheme("blue1");
+			}
+		}
+	};
 
-  const useTheme = `var(--${theme})`;
-  const useDarkTheme = `var(--dark-${theme})`;
-  const useLightTheme = `var(--light-${theme})`;
+	const useTheme = `var(--${theme})`;
+	const useDarkTheme = `var(--dark-${theme})`;
+	const useLightTheme = `var(--light-${theme})`;
 
-  const pomodoroContextResponse = {
-    isStart,
-    isStudy,
-    isShortBreak,
-    isLongBreak,
-    isLoading,
-    totalPomodorosCompleted,
-    theme,
-    status,
-    useTheme,
-    useDarkTheme,
-    useLightTheme,
-    saveStudyProgressInFirebase,
-    saveShortBreakProgressInFirebase,
-    saveLongBreakProgressInFirebase,
-    handleChangeStatus,
-    convertMinutesToSeconds,
-  };
+	const pomodoroContextResponse = {
+		isStart,
+		isStudy,
+		isShortBreak,
+		isLongBreak,
+		isLoading,
+		totalPomodorosCompleted,
+		theme,
+		status,
+		useTheme,
+		useDarkTheme,
+		useLightTheme,
+		saveStudyProgressInFirebase,
+		saveShortBreakProgressInFirebase,
+		saveLongBreakProgressInFirebase,
+		handleChangeStatus,
+		convertMinutesToSeconds,
+	};
 
-  const useTimerResponse = useTimer(pomodoroContextResponse);
+	const useTimerResponse = useTimer(pomodoroContextResponse);
 
-  return (
-    <PomodoroContext.Provider
-      value={{
-        ...pomodoroContextResponse,
-        ...useTimerResponse,
-      }}
-    >
-      {children}
-    </PomodoroContext.Provider>
-  );
+	return (
+		<PomodoroContext.Provider
+			value={{
+				...pomodoroContextResponse,
+				...useTimerResponse,
+			}}
+		>
+			{children}
+		</PomodoroContext.Provider>
+	);
 };
 
 export const usePomodoro = () => {
-  return useContext(PomodoroContext);
+	return useContext(PomodoroContext);
 };

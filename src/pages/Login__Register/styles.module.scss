@@ -1,37 +1,38 @@
 .container {
-  height: 89%;
+	height: 89%;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .form {
-  display: flex;
-  text-align: left;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+	display: flex;
+	text-align: left;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 
-  h1 {
-    font-weight: bold;
-  }
+	h1 {
+		font-weight: bold;
+	}
 
-  label {
-    width: 100%;
+	label {
+		width: 100%;
 
-    &:first-child {
-      margin-top: 0;
-    }
-  }
+		&:first-child {
+			margin-top: 0;
+		}
+	}
 
-  input, button {
-    width: 100%;
-    font-size: 23px;
-  }
-  
-  button {
-    margin-top: 1.5rem;
-    padding: 10px 0 !important;
-  }
+	input,
+	button {
+		width: 100%;
+		font-size: 23px;
+	}
+
+	button {
+		margin-top: 1.5rem;
+		padding: 10px 0 !important;
+	}
 }

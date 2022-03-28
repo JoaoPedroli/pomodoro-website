@@ -1,90 +1,98 @@
 .container {
-  background: var(--white1);
-  width: 300px;
-  height: calc(100vh - var(--header-height));
-  padding-top: 2rem;
-  box-shadow: 1px 1px 7px rgb(192, 192, 192);
-  border-end-end-radius: 5rem;
+	background: var(--white1);
+	width: 300px;
+	height: calc(100vh - var(--header-height));
+	padding-top: 2rem;
+	box-shadow: 1px 1px 7px rgb(192, 192, 192);
+	border-end-end-radius: 5rem;
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 
-  h2 {
-    text-align: center;
-  }
+	h2 {
+		text-align: center;
+	}
 
-  @mixin usePageOptionStyles($theme) {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    cursor: pointer;
-    margin: 5px 0;
-    padding: 10px 10px 10px 25px;
-    width: 100%;
-    transition: all 0.2s;
-    color: $theme;
-  
-    span {
-      font-size: 20px;
-    }
+	@mixin usePageOptionStyles($theme) {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-start;
+		cursor: pointer;
+		margin: 5px 0;
+		padding: 10px 10px 10px 25px;
+		width: 100%;
+		transition: all 0.2s;
+		color: $theme;
 
-    &:hover {
-      background: $theme;
-      color: var(--white);
-      transform: translateX(10px);
-    }
-  }
+		span {
+			font-size: 20px;
+		}
 
+		&:hover {
+			background: $theme;
+			color: var(--white);
+			transform: translateX(10px);
+		}
+	}
 
-  .page-option-primary {
-    @include usePageOptionStyles(var(--primary));
-  }
+	.page-option-primary {
+		@include usePageOptionStyles(var(--primary));
+	}
 
-  .page-option-yellow {
-    @include usePageOptionStyles(var(--dark-yellow));
-  }
+	.page-option-yellow {
+		@include usePageOptionStyles(var(--dark-yellow));
+	}
 
-  .page-option-blue {
-    @include usePageOptionStyles(var(--blue));
-  }
+	.page-option-blue {
+		@include usePageOptionStyles(var(--blue));
+	}
 
-  .page-option-blue1 {
-    @include usePageOptionStyles(var(--dark-blue1)); 
-  }
+	.page-option-blue1 {
+		@include usePageOptionStyles(var(--dark-blue1));
+	}
 
-  @mixin useActivePageOptionStyles($theme, $light-theme) {
-    @include usePageOptionStyles($theme);
-    background: $light-theme;
-    color: $theme;
-  }
+	@mixin useActivePageOptionStyles($theme, $light-theme) {
+		@include usePageOptionStyles($theme);
+		background: $light-theme;
+		color: $theme;
+	}
 
-  .active-page-option-primary {
-    @include useActivePageOptionStyles(var(--primary), var(--light-primary));
-  }
+	.active-page-option-primary {
+		@include useActivePageOptionStyles(
+			var(--primary),
+			var(--light-primary)
+		);
+	}
 
-  .active-page-option-yellow {
-    @include useActivePageOptionStyles(var(--dark-yellow), var(--light-yellow));
-  }
+	.active-page-option-yellow {
+		@include useActivePageOptionStyles(
+			var(--dark-yellow),
+			var(--light-yellow)
+		);
+	}
 
-  .active-page-option-blue {
-    @include useActivePageOptionStyles(var(--blue), var(--light-blue));
-  }
+	.active-page-option-blue {
+		@include useActivePageOptionStyles(var(--blue), var(--light-blue));
+	}
 
-  .active-page-option-blue1 {
-    @include useActivePageOptionStyles(var(--dark-blue1), var(--light-blue1)); 
-  }
+	.active-page-option-blue1 {
+		@include useActivePageOptionStyles(
+			var(--dark-blue1),
+			var(--light-blue1)
+		);
+	}
 
-  .divExit {
-    @include usePageOptionStyles(var(--red));
-    color: var(--red);
+	.divExit {
+		@include usePageOptionStyles(var(--red));
+		color: var(--red);
 
-    display: flex;
-    align-items: center;
+		display: flex;
+		align-items: center;
 
-    &:hover {
-      background: var(--red);
-    }
-  }
+		&:hover {
+			background: var(--red);
+		}
+	}
 }

@@ -1,145 +1,148 @@
 :root {
-  --white: #eaeaea;
-  --white1: #ddd;
-  --white2: #ccc;
-  --white3: #bbb;
-  --white5: #aaa;
-  --black: #303030;
-  --black1: #424242;
+	--white: #eaeaea;
+	--white1: #ddd;
+	--white2: #ccc;
+	--white3: #bbb;
+	--white5: #aaa;
+	--black: #303030;
+	--black1: #424242;
 
-  --background: var(--white);
-  --color: var(--black);
-  
-  --primary: #6ab04c;
-  --dark-primary: #5e9d43;
-  --light-primary: #88e26279;
-  --dark-primary: #5e9d43;
-  --yellow: #f9ca24;
-  --dark-yellow: #e1b12c;
-  --light-yellow: #f8ce3652;
-  --blue: #00a8ff;
-  --dark-blue: #0097e6;
-  --light-blue: #00aaff41;
-  --blue1: #0fd1e2;
-  --dark-blue1: #0eb0be;
-  --light-blue1: #0bb6c542;
-  --red: #e66c4f;
-  --dark-red: #b3543c;
-  --light-red: #e66d4f85;
+	--background: var(--white);
+	--color: var(--black);
 
-  --calendar-color-25: rgba(35, 114, 61, .5);
-  --calendar-color-50: rgba(35, 114, 61, .7);
-  --calendar-color-100: rgba(35, 110, 64, .9);
-  --calendar-color-200: rgb(35, 77, 42);
-  
-  --header-height: 5.5rem;
-  --default-border-radius: 10px;
-  --default-box-shadow: 2px 2px 10px gray;
-  --default-transition-time: 1s;
-  --default-width: 90%;
-  --default-max-width: 70vh;
+	--primary: #6ab04c;
+	--dark-primary: #5e9d43;
+	--light-primary: #88e26279;
+	--dark-primary: #5e9d43;
+	--yellow: #f9ca24;
+	--dark-yellow: #e1b12c;
+	--light-yellow: #f8ce3652;
+	--blue: #00a8ff;
+	--dark-blue: #0097e6;
+	--light-blue: #00aaff41;
+	--blue1: #0fd1e2;
+	--dark-blue1: #0eb0be;
+	--light-blue1: #0bb6c542;
+	--red: #e66c4f;
+	--dark-red: #b3543c;
+	--light-red: #e66d4f85;
+
+	--calendar-color-25: rgba(35, 114, 61, 0.5);
+	--calendar-color-50: rgba(35, 114, 61, 0.7);
+	--calendar-color-100: rgba(35, 110, 64, 0.9);
+	--calendar-color-200: rgb(35, 77, 42);
+
+	--header-height: 5.5rem;
+	--default-border-radius: 10px;
+	--default-box-shadow: 2px 2px 10px gray;
+	--default-transition-time: 1s;
+	--default-width: 90%;
+	--default-max-width: 70vh;
 }
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
 body {
-  font-family: "Roboto", sans-serif;
-  background: var(--background);
-  color: var(--color);
-  transition: all 0.3s;
+	font-family: "Roboto", sans-serif;
+	background: var(--background);
+	color: var(--color);
+	transition: all 0.3s;
 }
 
 label {
-  margin: 1rem 0 0;
+	margin: 1rem 0 0;
 }
 
 button,
 select,
 a {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 .container-box-shadow {
-  background: #fff;
-  padding: 2.5rem;
-  box-shadow: var(--default-box-shadow);
-  border-radius: var(--default-border-radius);
+	background: #fff;
+	padding: 2.5rem;
+	box-shadow: var(--default-box-shadow);
+	border-radius: var(--default-border-radius);
 }
 
 .div-row {
-  display: flex;
-  flex-direction: row;
+	display: flex;
+	flex-direction: row;
 }
 
 .div-column {
-  display: flex;
-  flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
 input {
-  border: 1.6px gray solid !important;
-  transition: all .3s;
+	border: 1.6px gray solid !important;
+	transition: all 0.3s;
 
-  &:hover {
-    box-shadow: 1px 1px 5px gray;
-  }
+	&:hover {
+		box-shadow: 1px 1px 5px gray;
+	}
 }
 
-@mixin buttonConfigs($background: var(--primary), $shadow-color: var(--dark-primary)) {
-  transition: all 0.3s;
-  padding: .7rem;
-  border: none;
-  background: $background;
-  color: #fff;
-  box-shadow: 0 .2rem $shadow-color;
-  border-radius: var(--default-border-radius);
-  font-size: 2rem;
-  
-  &:hover {
-    box-shadow: 0 .4rem $shadow-color;
-    transform: translateY(-0.2rem);
-  }
+@mixin buttonConfigs(
+	$background: var(--primary),
+	$shadow-color: var(--dark-primary)
+) {
+	transition: all 0.3s;
+	padding: 0.7rem;
+	border: none;
+	background: $background;
+	color: #fff;
+	box-shadow: 0 0.2rem $shadow-color;
+	border-radius: var(--default-border-radius);
+	font-size: 2rem;
 
-  &:active {
-    box-shadow: none;
-    transform: translateY(0.2rem);
-  }
-  
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    box-shadow: none;
-  }
-  
-  &:disabled:hover {
-    transform: translate(0);
-  }
+	&:hover {
+		box-shadow: 0 0.4rem $shadow-color;
+		transform: translateY(-0.2rem);
+	}
+
+	&:active {
+		box-shadow: none;
+		transform: translateY(0.2rem);
+	}
+
+	&:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
+		box-shadow: none;
+	}
+
+	&:disabled:hover {
+		transform: translate(0);
+	}
 }
 
 .primary-button {
-  @include buttonConfigs();
+	@include buttonConfigs();
 }
 
 .yellow-button {
-  @include buttonConfigs(var(--yellow), var(--dark-yellow));
+	@include buttonConfigs(var(--yellow), var(--dark-yellow));
 }
 
 .blue-button {
-  @include buttonConfigs(var(--blue), var(--dark-blue));
+	@include buttonConfigs(var(--blue), var(--dark-blue));
 }
 
 .blue1-button {
-  @include buttonConfigs(var(--blue1), var(--dark-blue1));
+	@include buttonConfigs(var(--blue1), var(--dark-blue1));
 }
 
 .red-button {
-  @include buttonConfigs(var(--red), var(--dark-red));
+	@include buttonConfigs(var(--red), var(--dark-red));
 }
 
 #pointer {
-  cursor: pointer;
+	cursor: pointer;
 }

@@ -1,54 +1,54 @@
 .container {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
 
-  width: 100%;
-  color: var(--white);
-  padding: 1rem 3rem;
-  transition: all var(--default-transition-time);
+	width: 100%;
+	color: var(--white);
+	padding: 1rem 3rem;
+	transition: all var(--default-transition-time);
 
-  .userIcon {
-    background: var(--white);
-    border-radius: 5rem;
-    font-size: 3rem;
-    cursor: pointer;
-    transition: all var(--default-transition-time);
-  }
+	.userIcon {
+		background: var(--white);
+		border-radius: 5rem;
+		font-size: 3rem;
+		cursor: pointer;
+		transition: all var(--default-transition-time);
+	}
 }
 
 .auth {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 
-  button {
-    margin: 0 3px;
-    box-shadow: none;
-    font-size: 1.3rem;
+	button {
+		margin: 0 3px;
+		box-shadow: none;
+		font-size: 1.3rem;
 
-    &:hover {
-      box-shadow: none;
-      transform: none;
-    }
-  }
+		&:hover {
+			box-shadow: none;
+			transform: none;
+		}
+	}
 }
 
 #login-txt {
-  background: none;
-  font-weight: bold;
-  border: 0.5px solid var(--white);
-  
-  &:hover {
-    background: var(--white);
-  }
+	background: none;
+	font-weight: bold;
+	border: 0.5px solid var(--white);
+
+	&:hover {
+		background: var(--white);
+	}
 }
 
 #signup-txt {
-  background: var(--white);
-  margin-left: 15px;
-  font-weight: bold;
-  &:hover {
-    opacity: .9;
-  }
+	background: var(--white);
+	margin-left: 15px;
+	font-weight: bold;
+	&:hover {
+		opacity: 0.9;
+	}
 }

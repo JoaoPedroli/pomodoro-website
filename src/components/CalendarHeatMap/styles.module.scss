@@ -1,19 +1,19 @@
 .react-calendar-heatmap {
-  width: 90%;
-  
-  .color-empty {
-    fill: var(--white3);
-  }
-  .color-scale-25 {
-    fill: var(--calendar-color-25);
-  }
-  .color-scale-50 {
-    fill: var(--calendar-color-50);
-  }
-  .color-scale-100 {
-    fill: var(--calendar-color-100);
-  }
-  .color-scale-200 {
-    fill: var(--calendar-color-200);
-  }
+	width: 90%;
+
+	.color-empty {
+		fill: var(--white3);
+	}
+	.color-scale-25 {
+		fill: var(--calendar-color-25);
+	}
+	.color-scale-50 {
+		fill: var(--calendar-color-50);
+	}
+	.color-scale-100 {
+		fill: var(--calendar-color-100);
+	}
+	.color-scale-200 {
+		fill: var(--calendar-color-200);
+	}
 }

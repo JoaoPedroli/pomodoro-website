@@ -1,53 +1,53 @@
 @import "../../styles/global.scss";
 
 .container {
-  min-height: calc(100vh - var(--header-height));
+	min-height: calc(100vh - var(--header-height));
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
 .subcontainer {
-  @extend .container-box-shadow;
-  min-width: 434px;
-  max-height: 450px;
+	@extend .container-box-shadow;
+	min-width: 434px;
+	max-height: 450px;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
 
-  #progressTimer {
-    width: 434px;
-    border-radius: 10px 10px 0 0;
-    background: var(--white1);
-    height: 10px;
-    margin: -2.5rem -2.5rem 2.5rem -2.5rem;
-  }
+	#progressTimer {
+		width: 434px;
+		border-radius: 10px 10px 0 0;
+		background: var(--white1);
+		height: 10px;
+		margin: -2.5rem -2.5rem 2.5rem -2.5rem;
+	}
 
-  #title {
-    font-size: 36px;
-  }
+	#title {
+		font-size: 36px;
+	}
 
-  #time {
-    font-size: 55px;
-    margin: 38px 0;
-    font-weight: bold;
-  }
+	#time {
+		font-size: 55px;
+		margin: 38px 0;
+		font-weight: bold;
+	}
 
-  #closebutton {
-    background: var(--red);
-    transition: all 1s;
-    font-size: 20px;
-    padding: 4px 10px !important;
-  }
+	#closebutton {
+		background: var(--red);
+		transition: all 1s;
+		font-size: 20px;
+		padding: 4px 10px !important;
+	}
 }
 
 .divbuttons {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }

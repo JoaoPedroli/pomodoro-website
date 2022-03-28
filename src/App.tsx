@@ -6,14 +6,14 @@ import { PomodoroContextProvider } from "./contexts/pomodoroContext";
 import { Routes } from "./routes";
 
 export const App = () => {
-  return (
-    <AuthContextProvider>
-      <PomodoroContextProvider>
-        <BrowserRouter>
-          <ToastContainer autoClose={3000} />
-          <Routes />
-        </BrowserRouter>
-      </PomodoroContextProvider>
-    </AuthContextProvider>
-  );
+	return (
+		<AuthContextProvider>
+			<PomodoroContextProvider>
+				<BrowserRouter>
+					<ToastContainer autoClose={3000} />
+					<Routes />
+				</BrowserRouter>
+			</PomodoroContextProvider>
+		</AuthContextProvider>
+	);
 };

@@ -7,164 +7,179 @@ import firebase from "../../database/firebaseConnection";
 import styles from "./styles.module.scss";
 
 type StudyTimeDaysProps = {
-  date: string;
-  countInMinutes: number;
+	date: string;
+	countInMinutes: number;
 };
 
 export const Dashboard = () => {
-  const { handleChangeStatus } = usePomodoro();
+	const { handleChangeStatus } = usePomodoro();
 
-  const [pomodoroDays, setPomodoroDays] = useState([]);
-  const [allStudyTime, setAllStudyTime] = useState(0);
-  const [allShortBreakTime, setAllShortBreakTime] = useState(0);
-  const [allLongBreakTime, setAllLongBreakTime] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
+	const [pomodoroDays, setPomodoroDays] = useState([]);
+	const [allStudyTime, setAllStudyTime] = useState(0);
+	const [allShortBreakTime, setAllShortBreakTime] = useState(0);
+	const [allLongBreakTime, setAllLongBreakTime] = useState(0);
+	const [isLoading, setIsLoading] = useState(true);
 
-  const getUid = () => JSON.parse(localStorage.getItem("UserData")).uid;
-  const getPlural = (value: number) => (value === 1 ? "" : "s");
+	const getUid = () => JSON.parse(localStorage.getItem("UserData")).uid;
+	const getPlural = (value: number) => (value === 1 ? "" : "s");
 
-  useEffect(() => {
-    fetchData();
+	useEffect(() => {
+		fetchData();
 
-    async function fetchData() {
-      const { newStudyDays, newAllStudyTime } =
-        await getStudyDaysAndAllStudyTime();
-      const newShortBreakTime = await getAllShortBreakTime();
-      const newLongBreakTime = await getAllLongBreakTime();
-      setPomodoroDays(newStudyDays);
-      setAllStudyTime(newAllStudyTime);
-      setAllShortBreakTime(newShortBreakTime);
-      setAllLongBreakTime(newLongBreakTime);
-      setIsLoading(false);
-    }
-  }, []);
+		async function fetchData() {
+			const { newStudyDays, newAllStudyTime } =
+				await getStudyDaysAndAllStudyTime();
+			const newShortBreakTime = await getAllShortBreakTime();
+			const newLongBreakTime = await getAllLongBreakTime();
+			setPomodoroDays(newStudyDays);
+			setAllStudyTime(newAllStudyTime);
+			setAllShortBreakTime(newShortBreakTime);
+			setAllLongBreakTime(newLongBreakTime);
+			setIsLoading(false);
+		}
+	}, []);
 
-  async function getStudyDaysAndAllStudyTime(): Promise<{
-    newStudyDays: Array<StudyTimeDaysProps>;
-    newAllStudyTime: number;
-  }> {
-    const newStudyDays = new Array<StudyTimeDaysProps>(366);
-    let newAllStudyTime = 0;
-    let currentIndex = 0;
+	async function getStudyDaysAndAllStudyTime(): Promise<{
+		newStudyDays: Array<StudyTimeDaysProps>;
+		newAllStudyTime: number;
+	}> {
+		const newStudyDays = new Array<StudyTimeDaysProps>(366);
+		let newAllStudyTime = 0;
+		let currentIndex = 0;
 
-    await firebase
-      .firestore()
-      .collection("users")
-      .doc(getUid())
-      .collection("study-time-days")
-      .get()
-      .then((snapshot) => {
-        snapshot.forEach((doc) => {
-          const intervalBetweenTodayAndSnapshotDay =
-            new Date().getDate() - new Date(doc?.id).getDate();
+		await firebase
+			.firestore()
+			.collection("users")
+			.doc(getUid())
+			.collection("study-time-days")
+			.get()
+			.then(snapshot => {
+				snapshot.forEach(doc => {
+					const intervalBetweenTodayAndSnapshotDay =
+						new Date().getDate() - new Date(doc?.id).getDate();
 
-          const { duration } = doc.data();
+					const { duration } = doc.data();
 
-          newAllStudyTime += duration;
+					newAllStudyTime += duration;
 
-          (newStudyDays[intervalBetweenTodayAndSnapshotDay] = {
-            date: doc?.id,
-            countInMinutes: duration,
-          }),
-            ++currentIndex;
-        });
-      });
+					(newStudyDays[intervalBetweenTodayAndSnapshotDay] = {
+						date: doc?.id,
+						countInMinutes: duration,
+					}),
+						++currentIndex;
+				});
+			});
 
-    for (let i = 0; i < 366; ++i) {
-      if (!newStudyDays[i]?.date) {
-        const newDate = new Date();
-        newDate.setDate(newDate.getDate() - i);
-        newStudyDays[i] = {
-          date: String(newDate),
-          countInMinutes: 0,
-        };
-      }
-    }
+		for (let i = 0; i < 366; ++i) {
+			if (!newStudyDays[i]?.date) {
+				const newDate = new Date();
+				newDate.setDate(newDate.getDate() - i);
+				newStudyDays[i] = {
+					date: String(newDate),
+					countInMinutes: 0,
+				};
+			}
+		}
 
-    return { newStudyDays, newAllStudyTime };
-  }
+		return { newStudyDays, newAllStudyTime };
+	}
 
-  async function getAllShortBreakTime(): Promise<number> {
-    let newAllShortBreakTime = 0;
+	async function getAllShortBreakTime(): Promise<number> {
+		let newAllShortBreakTime = 0;
 
-    await firebase
-      .firestore()
-      .collection("users")
-      .doc(getUid())
-      .collection("short-break-time-days")
-      .get()
-      .then((snapshot) => {
-        snapshot.forEach(
-          (doc) => (newAllShortBreakTime += doc.data()?.duration ?? 0)
-        );
-      });
+		await firebase
+			.firestore()
+			.collection("users")
+			.doc(getUid())
+			.collection("short-break-time-days")
+			.get()
+			.then(snapshot => {
+				snapshot.forEach(
+					doc => (newAllShortBreakTime += doc.data()?.duration ?? 0)
+				);
+			});
 
-    return newAllShortBreakTime;
-  }
+		return newAllShortBreakTime;
+	}
 
-  async function getAllLongBreakTime(): Promise<number> {
-    let newAllShortBreakTime = 0;
+	async function getAllLongBreakTime(): Promise<number> {
+		let newAllShortBreakTime = 0;
 
-    await firebase
-      .firestore()
-      .collection("users")
-      .doc(getUid())
-      .collection("long-break-time-days")
-      .get()
-      .then((snapshot) => {
-        snapshot.forEach(
-          (doc) => (newAllShortBreakTime += doc.data()?.duration ?? 0)
-        );
-      });
+		await firebase
+			.firestore()
+			.collection("users")
+			.doc(getUid())
+			.collection("long-break-time-days")
+			.get()
+			.then(snapshot => {
+				snapshot.forEach(
+					doc => (newAllShortBreakTime += doc.data()?.duration ?? 0)
+				);
+			});
 
-    return newAllShortBreakTime;
-  }
+		return newAllShortBreakTime;
+	}
 
-  return (
-    <div className={styles.container}>
-      <MenuProfileOptions />
+	return (
+		<div className={styles.container}>
+			<MenuProfileOptions />
 
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <div className={styles.subcontainer}>
-          <h1>Dashboard</h1>
+			{isLoading ? (
+				<Loader />
+			) : (
+				<div className={styles.subcontainer}>
+					<h1>Dashboard</h1>
 
-          <CalendarHeatMap pomodoroDays={pomodoroDays} />
+					<CalendarHeatMap pomodoroDays={pomodoroDays} />
 
-          <div className={styles.statisticsContainer}>
-            <div
-              className={styles.containerAllTime}
-              style={{ borderRadius: "10px 0 0 10px", background: "linear-gradient(var(--yellow), var(--dark-yellow))" }}
-            >
-              <span>Total Study Time</span>
-              <span>
-                {allStudyTime} Minute{getPlural(allStudyTime)} {allStudyTime > 25 && "👏👏👏"}
-              </span>
-            </div>
-            <div className="div-column">
-              <div
-                className={styles.containerAllTime}
-                style={{ borderRadius: "0 10px 0 0", background: "linear-gradient(var(--blue), var(--dark-blue))" }}
-              >
-                <span>Total Short Break Time</span>
-                <span>
-                  {allShortBreakTime} Minute{getPlural(allShortBreakTime)}
-                </span>
-              </div>
-              <div
-                className={styles.containerAllTime}
-                style={{ borderRadius: "0 0 10px 0", background: "linear-gradient(var(--blue1), var(--dark-blue1))" }}
-              >
-                <span>Total Long Break Time</span>
-                <span>
-                  {allLongBreakTime} Minute{getPlural(allLongBreakTime)}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
+					<div className={styles.statisticsContainer}>
+						<div
+							className={styles.containerAllTime}
+							style={{
+								borderRadius: "10px 0 0 10px",
+								background:
+									"linear-gradient(var(--yellow), var(--dark-yellow))",
+							}}
+						>
+							<span>Total Study Time</span>
+							<span>
+								{allStudyTime} Minute{getPlural(allStudyTime)}{" "}
+								{allStudyTime > 25 && "👏👏👏"}
+							</span>
+						</div>
+						<div className="div-column">
+							<div
+								className={styles.containerAllTime}
+								style={{
+									borderRadius: "0 10px 0 0",
+									background:
+										"linear-gradient(var(--blue), var(--dark-blue))",
+								}}
+							>
+								<span>Total Short Break Time</span>
+								<span>
+									{allShortBreakTime} Minute
+									{getPlural(allShortBreakTime)}
+								</span>
+							</div>
+							<div
+								className={styles.containerAllTime}
+								style={{
+									borderRadius: "0 0 10px 0",
+									background:
+										"linear-gradient(var(--blue1), var(--dark-blue1))",
+								}}
+							>
+								<span>Total Long Break Time</span>
+								<span>
+									{allLongBreakTime} Minute
+									{getPlural(allLongBreakTime)}
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			)}
+		</div>
+	);
 };
