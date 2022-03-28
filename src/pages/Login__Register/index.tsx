@@ -4,8 +4,11 @@ import { Loader } from "../../components/Loader";
 import { useAuth } from "../../contexts/authContext";
 import { usePomodoro } from "../../contexts/pomodoroContext";
 import styles from "./styles.module.scss";
+import { useLocation } from "react-router-dom";
 
-export const Login__Register = (props: { location: { search: string } }) => {
+export const Login__Register = () => {
+	const location = useLocation();
+
 	const { createUserWithEmailAndPassword, signIn } = useAuth();
 	const { theme } = usePomodoro();
 
@@ -16,9 +19,9 @@ export const Login__Register = (props: { location: { search: string } }) => {
 	const [password, setPassword] = useState("");
 
 	useEffect(() => {
-		const { search } = props.location;
+		const { search } = location;
 		setOptionAuth(search.substring(1, search.length));
-	}, [props.location.search]);
+	}, [location.search]);
 
 	const handleSubmit = async e => {
 		e.preventDefault();
