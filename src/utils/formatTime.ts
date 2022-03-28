@@ -1,7 +1,8 @@
-export const formatTime = (timeInSeconds) => {
-  const getSeconds = `0${timeInSeconds % 60}`.slice(-2);
+export const formatTime = (timeInSeconds = 0) => {
+  const formattedSeconds = `0${timeInSeconds % 60}`.slice(-2);
   const timeInMinutes = Math.floor(timeInSeconds / 60);
-  const getMinutes = `0${timeInMinutes % 60}`.slice(-2);
+  const formattedMinutes = `0${timeInMinutes % 60}`.slice(-2);
+  const formattedTime = `${formattedMinutes} : ${formattedSeconds}`;
 
-  return `${getMinutes} : ${getSeconds}`;
+  return formattedTime;
 };
