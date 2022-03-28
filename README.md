@@ -1,4 +1,4 @@
-# *** Project developed with the aim of improving and training my skills in TypeScript, SASS, Clean Code and Refactoring. ***
+## *** Project developed with the aim of improving and training my skills in TypeScript, SASS, Clean Code and Refactoring. ***
 
 ## Getting Started with Create React App
 
