@@ -43,7 +43,7 @@ export const useTimer = (pomodoroData: PomodoroDataProps): UseTimerProps => {
 	const countRef = useRef(null);
 
 	const NUM_NEEDED_FOR_LONG_BREAK = 4;
-	const DEBUG = true;
+	const DEBUG = false;
 
 	const getStudyTime = () => (DEBUG ? 1 : convertMinutesToSeconds(25));
 	const getShortBreakTime = () => (DEBUG ? 1 : convertMinutesToSeconds(5));
