@@ -49,17 +49,16 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const loadStorage = () => {
+    loadStorage();
+
+    function loadStorage() {
       const storageUserData = localStorage.getItem("UserData");
 
-      if (storageUserData) {
+      if (storageUserData)
         setUserData(JSON.parse(storageUserData));
-      }
 
       setIsLoading(false);
     };
-
-    loadStorage();
   }, []);
 
   const handleReturnErrorMessage = (error) => {
@@ -80,16 +79,23 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
 
   const saveUserData = async (userData: UserSignedDataProps) => {
     const { uid, username, email } = userData;
+    const isSigned = !username;
+    if (isSigned) await saveUserSignedData();
+    else await saveUserNotSignedData();
 
-    const redirectAndSendFeedback = () => {
+    function getFirebasePath() {
+      return firebase
+      .firestore()
+      .collection("users")
+      .doc(uid);
+    }
+
+    function redirectAndSendFeedback() {
       toast.success("Bem Vindo a plataforma!");
     };
 
-    const saveUserSignedData = async () => {
-      await firebase
-        .firestore()
-        .collection("users")
-        .doc(uid)
+    async function saveUserSignedData() {
+      await getFirebasePath()
         .get()
         .then((userProfile) => {
           const username = userProfile.data().username;
@@ -102,11 +108,8 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
         .catch((error) => handleReturnErrorMessage(error));
     };
 
-    const saveUserNotSignedData = async () => {
-      await firebase
-        .firestore()
-        .collection("users")
-        .doc(uid)
+    async function saveUserNotSignedData() {
+      await getFirebasePath()
         .set({
           username,
           email,
@@ -118,10 +121,6 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
         })
         .catch((error) => handleReturnErrorMessage(error));
     };
-
-    const isSigned = !username;
-    if (isSigned) saveUserSignedData();
-    else saveUserNotSignedData();
   };
 
   const createUserWithEmailAndPassword = async ({
